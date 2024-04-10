@@ -1,6 +1,7 @@
 package API;
 
 import APIObjects.Driver;
+import APIObjects.Team;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -44,7 +45,7 @@ public class DriverAPI {
 
         drivers = new ArrayList<Driver>();
         try {
-            URL url = new URL("https://api.openf1.org/v1/drivers?session_key=latest");
+            URL url = new URL("https://api.openf1.org/v1/drivers?session_key=9472");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
@@ -62,6 +63,7 @@ public class DriverAPI {
                     String[] keyValuePairs = cur.split(",");
                     String name = "";
                     int number = 0;
+                    Team newTeam = null;
                     for (String pair : keyValuePairs) {
                         String[] keyValue = pair.split(":");
                         if (keyValue.length != 2) continue;
@@ -74,10 +76,14 @@ public class DriverAPI {
                             case "\"full_name\"":
                                 name = value.replace("\"", "");
                                 break;
+
+                            case "\"team_name\"":
+                                newTeam = new Team( value.replace("\"", ""));
+                                break;
                         }
                     }
 
-                    Driver newDriver = new Driver(name, number);
+                    Driver newDriver = new Driver(name, number, newTeam);
                     if (number >0 && number < 100) drivers.add(newDriver);
                 }
 

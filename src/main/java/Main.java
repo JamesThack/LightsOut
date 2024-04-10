@@ -14,10 +14,6 @@ public class Main {
     public static void main(String[] args) {
 
         DriverPositions positions = new DriverPositions();
-
-        positions.getAllDriverPos(22);
-
-        positions.printDriverPositionsAt(RegexAssist.convertToUnix("06:25:00"));
         
         MainScreen window = new MainScreen(RegexAssist.convertToUnix("06:11:00"));
        

@@ -93,7 +93,8 @@ public class MainScreen {
 			driverButtons = new ArrayList<JButton>();
 			int count = 1;
 			for (Driver cur : DriverPositions.getInstance().getDriversInOrder(seconds)) {
-				JButton newBut = new JButton("P" + count + " " + cur.getInitials() + String.valueOf(cur.getNumber()));
+				JButton newBut = new JButton("   ");
+				newBut.setBackground(cur.getTeam().getColour());
 				driverButtons.add(newBut);
 				panel.add(newBut);
 				count +=1;
@@ -103,7 +104,10 @@ public class MainScreen {
 			int count = 0;
 			for (JButton cur : driverButtons) {
 				Driver curDriver = driverOrder.get(count);
-				cur.setText("P" + (count + 1) + " " + curDriver.getInitials() + String.valueOf(curDriver.getNumber()));
+				cur.setBackground(curDriver.getTeam().getColour());
+				cur.setForeground(new Color(0,0,0));
+				if (curDriver.getTeam().getName().contains("Red Bull")) cur.setForeground(new Color(255, 255, 255));
+				cur.setText("P" + (count + 1) + ": " + curDriver.getStarter() + " " + String.valueOf(curDriver.getNumber()));
 				count +=1;
 			}
 		}
@@ -142,7 +146,7 @@ public class MainScreen {
 		panel.add(panel_2, BorderLayout.SOUTH);
 	
 		
-		jSeconds = new JLabel("Seconds: " + RegexAssist.convertToTimeString(seconds));
+		jSeconds = new JLabel("Race Time: " + RegexAssist.convertToTimeString(seconds));
 		jSeconds.setForeground(new Color(255, 255, 255));
 		panel_2.add(jSeconds);
 		
