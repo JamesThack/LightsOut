@@ -9,11 +9,19 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeMap;
 
 public class DriverPositions {
+	
     private HashMap<Integer, TreeMap<Integer, Integer>> positions;
+    private static DriverPositions instance;
+    
+    public static DriverPositions getInstance() {
+    	if (instance == null) instance = new DriverPositions();
+    	return instance;
+    }
 
     public DriverPositions() {
 
@@ -113,6 +121,16 @@ public class DriverPositions {
         for (int cur : timings.keySet()) {
             System.out.println(DriverAPI.getInstance().getDriver(timings.get(cur)).getName() + " is in position " + cur);
         }
+    }
+    
+    public ArrayList<Driver> getDriversInOrder(int time) {
+    	ArrayList<Driver> order = new ArrayList<Driver>();
+    	TreeMap<Integer, Integer> timings = getAllDriverPositions(time);
+    	for (int cur : timings.keySet()) {
+            order.add(DriverAPI.getInstance().getDriver(timings.get(cur)));
+        }
+    	
+    	return order;
     }
 
 

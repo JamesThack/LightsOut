@@ -11,6 +11,10 @@ public class Driver {
         this.name = name;
         this.number = number;
     }
+    
+    public String getInitials() {
+    	return (name.split(" ")[0].toCharArray()[0] + "" + name.split(" ")[1].toCharArray()[0]);
+    }
 
     public String getName() {
         return name;
