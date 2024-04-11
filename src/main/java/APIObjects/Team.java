@@ -26,7 +26,6 @@ public class Team {
 	}
 	
 	private void setColour() {
-		System.out.println(name);
 		if (name.contains("Williams")) {
 			colour = new Color(0,0,255);
 		} else if (name.contains("Red Bull Racing")) {

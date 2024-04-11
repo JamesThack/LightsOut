@@ -1,6 +1,6 @@
 package GUI;
 
-import java.awt.EventQueue;
+import java.awt.*;
 
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
@@ -10,10 +10,13 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import API.DriverAPI;
 import APIObjects.Driver;
+import APIObjects.Race.LapCalculator;
 import APIObjects.RegexAssist;
 import APIObjects.Race.DriverPositions;
+import GUI.Components.RoundedButton;
+import GUI.Components.RoundedButtonBorder;
+import GUI.Sections.DriverViewTab;
 
-import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
@@ -21,16 +24,9 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.BoxLayout;
-import java.awt.FlowLayout;
-import java.awt.CardLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import java.awt.GridLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import javax.swing.JLabel;
-import java.awt.Color;
 import javax.swing.JTextArea;
 
 public class MainScreen {
@@ -38,21 +34,19 @@ public class MainScreen {
 	private JFrame frame;
 	private int seconds;
 	private JLabel jSeconds;
-	private JPanel driverView;
+	private JLabel jLaps;
 	private ArrayList<JButton> driverButtons;
 	private boolean isPaused;
+
+	private DriverViewTab driverViewTab;
 	
 
-	/**
-	 * Launch the application.
-
-	/**
-	 * Create the application.
-	 */
 	public MainScreen(int initialSeconds) {
 		isPaused = false;
 		frame = new JFrame();
 		seconds = initialSeconds;
+
+		driverViewTab = new DriverViewTab();
 		initialize();
 		frame.setVisible(true);
 	}
@@ -72,47 +66,16 @@ public class MainScreen {
 
 	public void setSeconds(int seconds) {
 		this.seconds = seconds;
+
 		jSeconds.setText("Seconds: " + RegexAssist.convertToTimeString(seconds));
 		jSeconds.validate();
 		jSeconds.repaint();
+
+		jLaps.setText("Current Lap: " + LapCalculator.getInstance().getLapFromTime(seconds));
+		jLaps.validate();
+		jLaps.repaint();
 		
-		driverView.repaint();
-		makeButtons(driverView);
-		driverView.validate();
-		
-		
-		//frame.getContentPane().removeAll(); // Remove all components
-		//frame.repaint(); // Repaint the JFrame
-		//initialize(); // Re-initialize the components
-		//frame.validate(); // Re-validate the JFrame
-	}
-	
-	private void makeButtons(JPanel panel) {
-		
-		if (driverButtons == null) {
-			driverButtons = new ArrayList<JButton>();
-			int count = 1;
-			for (Driver cur : DriverPositions.getInstance().getDriversInOrder(seconds)) {
-				JButton newBut = new JButton("   ");
-				newBut.setBackground(cur.getTeam().getColour());
-				driverButtons.add(newBut);
-				panel.add(newBut);
-				count +=1;
-			}
-		} else {
-			ArrayList<Driver> driverOrder = DriverPositions.getInstance().getDriversInOrder(seconds);
-			int count = 0;
-			for (JButton cur : driverButtons) {
-				Driver curDriver = driverOrder.get(count);
-				cur.setBackground(curDriver.getTeam().getColour());
-				cur.setForeground(new Color(0,0,0));
-				if (curDriver.getTeam().getName().contains("Red Bull")) cur.setForeground(new Color(255, 255, 255));
-				cur.setText("P" + (count + 1) + ": " + curDriver.getStarter() + " " + String.valueOf(curDriver.getNumber()));
-				count +=1;
-			}
-		}
-		
-		
+		driverViewTab.updateDriverView(seconds);
 	}
 
 	/**
@@ -134,13 +97,10 @@ public class MainScreen {
 		
 		
 		panel_1.setLayout(new BorderLayout(0, 0));
-		
-		driverView = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) driverView.getLayout();
-		panel_1.add(driverView, BorderLayout.CENTER);
-		
-		makeButtons(driverView);
-		
+
+
+		panel_1.add(driverViewTab.getDriverView(), BorderLayout.CENTER);
+
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(new Color(224, 27, 36));
 		panel.add(panel_2, BorderLayout.SOUTH);
@@ -149,6 +109,10 @@ public class MainScreen {
 		jSeconds = new JLabel("Race Time: " + RegexAssist.convertToTimeString(seconds));
 		jSeconds.setForeground(new Color(255, 255, 255));
 		panel_2.add(jSeconds);
+
+		jLaps = new JLabel("Current Lap: " + LapCalculator.getInstance().getLapFromTime(seconds));
+		jLaps.setForeground(new Color(255, 255, 255));
+		panel_2.add(jLaps);
 		
 		JButton btnNewButton = new JButton("Play");
 		btnNewButton.addActionListener(new ActionListener() {
@@ -166,7 +130,7 @@ public class MainScreen {
 		});
 		panel_2.add(btnNewButton_1);
 		
-		JButton btnNewButton_2 = new JButton("+5");
+		JButton btnNewButton_2 = new JButton("+5 Sec");
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setSeconds(seconds + 5);
@@ -174,7 +138,7 @@ public class MainScreen {
 		});
 		panel_2.add(btnNewButton_2);
 		
-		JButton btnNewButton_3 = new JButton("-5");
+		JButton btnNewButton_3 = new JButton("-5 Sec");
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setSeconds(seconds - 5);
@@ -193,6 +157,22 @@ public class MainScreen {
 			}
 		});
 		panel_2.add(btnSetTime);
+
+		JButton plusLap = new JButton("+1 Lap");
+		plusLap.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setSeconds(LapCalculator.getInstance().getTimeFromLap(LapCalculator.getInstance().getLapFromTime(seconds) + 1) + 1);
+			}
+		});
+		panel_2.add(plusLap);
+
+		JButton minusLap = new JButton("-1 Lap");
+		minusLap.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setSeconds(LapCalculator.getInstance().getTimeFromLap(LapCalculator.getInstance().getLapFromTime(seconds) - 1) + 1);
+			}
+		});
+		panel_2.add(minusLap);
 		
 		JPanel panel_3 = new JPanel();
 		panel_3.setBackground(new Color(0, 0, 0));

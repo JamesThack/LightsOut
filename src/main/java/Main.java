@@ -1,21 +1,29 @@
-import java.sql.Time;
 import java.util.Timer;
-import java.util.TimerTask;
 
 import API.AsyncTimer;
-import API.DriverAPI;
-import APIObjects.Driver;
 import APIObjects.Race.DriverPositions;
+import APIObjects.Race.LapCalculator;
 import GUI.MainScreen;
 import APIObjects.RegexAssist;
+import com.sun.java.swing.plaf.gtk.GTKLookAndFeel;
+
+import javax.swing.*;
 
 public class Main {
 
     public static void main(String[] args) {
+//
+//        try {
+//            UIManager.setLookAndFeel(
+//                    new GTKLookAndFeel());
+//        } catch (Exception e) {
+//            System.out.println("Error setting look and feel");
+//        }
 
-        DriverPositions positions = new DriverPositions();
         
         MainScreen window = new MainScreen(RegexAssist.convertToUnix("06:11:00"));
+
+
        
         AsyncTimer asyncHandler = new AsyncTimer(window);
         
