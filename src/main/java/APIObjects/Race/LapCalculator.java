@@ -41,8 +41,8 @@ public class LapCalculator {
                 String[] responses = output.replace("}", "").split("\\{");
                 for (String cur : responses) {
                     String[] keyValuePairs = cur.split(",");
-                    int lapNumber = 2;
-                    int time = 0;
+                    int lapNumber = -1;
+                    int time = -1;
                     for (String pair : keyValuePairs) {
                         String[] keyValue = pair.split(":");
                         if (keyValue.length < 2)continue;
@@ -59,7 +59,7 @@ public class LapCalculator {
                                 break;
                         }
                     }
-
+                    if (lapNumber == -1 || time == -1) continue;
                     if (laps.get(lapNumber) == null) {
                         laps.put(lapNumber, time);
                     } else {

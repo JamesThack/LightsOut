@@ -10,6 +10,11 @@ public class RoundedButton extends JButton {
     public RoundedButton(String text, int borderRadius) {
         super(text);
         this.borderRadius = borderRadius;
+
+        setOpaque(false); // Make sure it's non-opaque
+        setBorder(null);
+        setPreferredSize(new Dimension(borderRadius, borderRadius));
+
     }
 
     @Override

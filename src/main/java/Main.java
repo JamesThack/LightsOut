@@ -12,23 +12,10 @@ import javax.swing.*;
 public class Main {
 
     public static void main(String[] args) {
-//
-//        try {
-//            UIManager.setLookAndFeel(
-//                    new GTKLookAndFeel());
-//        } catch (Exception e) {
-//            System.out.println("Error setting look and feel");
-//        }
-
         
         MainScreen window = new MainScreen(RegexAssist.convertToUnix("06:11:00"));
-
-
-       
         AsyncTimer asyncHandler = new AsyncTimer(window);
-        
         Timer timer = new Timer();
-        
         timer.scheduleAtFixedRate(asyncHandler, 0, 1000);
       
     }
