@@ -5,19 +5,11 @@ import java.awt.*;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 
-import APIObjects.Race.LapCalculator;
-import APIObjects.RegexAssist;
 import GUI.Sections.RaceControlSection;
 import GUI.Sections.RaceDriverViewSection;
 import GUI.Sections.RaceInfoSection;
 
 import javax.swing.JPanel;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.awt.event.ActionEvent;
-import javax.swing.JLabel;
-import javax.swing.JTextArea;
 
 public class MainScreen {
 

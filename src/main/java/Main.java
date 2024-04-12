@@ -1,13 +1,8 @@
 import java.util.Timer;
 
 import API.AsyncTimer;
-import APIObjects.Race.DriverPositions;
-import APIObjects.Race.LapCalculator;
 import GUI.MainScreen;
 import APIObjects.RegexAssist;
-import com.sun.java.swing.plaf.gtk.GTKLookAndFeel;
-
-import javax.swing.*;
 
 public class Main {
 

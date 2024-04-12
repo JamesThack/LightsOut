@@ -1,7 +1,7 @@
 package GUI.Sections;
 
 import APIObjects.Driver;
-import APIObjects.Race.DriverPositions;
+import API.Race.DriverPositions;
 import GUI.Components.RoundedButton;
 
 import javax.swing.*;

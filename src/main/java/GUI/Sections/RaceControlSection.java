@@ -1,9 +1,7 @@
 package GUI.Sections;
 
-import APIObjects.Race.LapCalculator;
+import API.Race.LapCalculator;
 import APIObjects.RegexAssist;
-import GUI.Components.RoundedButton;
-import com.sun.org.apache.xerces.internal.impl.dv.xs.UnionDV;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,7 +27,7 @@ public class RaceControlSection {
     }
     
     public void updateView() {
-        jSeconds.setText("Seconds: " + RegexAssist.convertToTimeString(seconds));
+        jSeconds.setText("Race Time: " + RegexAssist.convertToTimeString(seconds));
         jSeconds.validate();
         jSeconds.repaint();
 
