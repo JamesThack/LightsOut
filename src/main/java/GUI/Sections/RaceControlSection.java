@@ -26,7 +26,6 @@ public class RaceControlSection {
         isPaused = false;
 
         initialiseLayout();
-        
     }
     
     public void updateView() {
@@ -72,38 +71,27 @@ public class RaceControlSection {
         jLaps.setForeground(new Color(255, 255, 255));
         panel.add(jLaps);
 
-
-        JButton btnNewButton = new JButton("▶");
-        btnNewButton.addActionListener(getPlayPauseActionListener(false));
-        panel.add(btnNewButton);
-
-        JButton btnNewButton_1 = new JButton("⏸");
-        btnNewButton_1.addActionListener(getPlayPauseActionListener(true));
-        panel.add(btnNewButton_1);
-
-        JButton btnNewButton_2 = new JButton("+5 Sec");
-        btnNewButton_2.addActionListener(getSecondsActionListener(+ 5));
-        panel.add(btnNewButton_2);
-
-        JButton btnNewButton_3 = new JButton("-5 Sec");
-        btnNewButton_3.addActionListener(getSecondsActionListener( -5));
-        panel.add(btnNewButton_3);
+        loadNewButtons(new String[]{"▶", "⏸", "+5 Sec", "-5 Sec", "Set Time", "+1 Lap", "-1 Lap"},
+                new ActionListener[]{
+                        getPlayPauseActionListener(false),
+                        getPlayPauseActionListener(true),
+                        getSecondsActionListener(+ 5),
+                        getSecondsActionListener( -5),
+                        getSecondsSetActionListener(),
+                        getLapsActionListener(1),
+                        getLapsActionListener(-1)});
 
         timeInput = new JTextArea();
         timeInput.setText(RegexAssist.convertToTimeString(seconds));
         panel.add(timeInput);
+    }
 
-        JButton btnSetTime = new JButton("Set Time");
-        btnSetTime.addActionListener(getSecondsSetActionListener());
-        panel.add(btnSetTime);
-
-        JButton plusLap = new JButton("+1 Lap");
-        plusLap.addActionListener(getLapsActionListener(1));
-        panel.add(plusLap);
-
-        JButton minusLap = new JButton("-1 Lap");
-        minusLap.addActionListener(getLapsActionListener(- 1));
-        panel.add(minusLap);
+    private void loadNewButtons(String[] names, ActionListener[] listeners) {
+        for (int i = 0; i< names.length; i++) {
+            JButton newBut = new JButton(names[i]);
+            newBut.addActionListener(listeners[i]);
+            panel.add(newBut);
+        }
     }
 
     public ActionListener getPlayPauseActionListener(boolean value) {
