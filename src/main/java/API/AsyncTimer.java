@@ -6,7 +6,7 @@ import GUI.MainScreen;
 
 public class AsyncTimer extends TimerTask {
 	
-	private MainScreen menu;
+	private final MainScreen menu;
 	
 	public AsyncTimer(MainScreen menu) {
 		this.menu = menu;

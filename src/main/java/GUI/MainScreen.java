@@ -13,11 +13,11 @@ import javax.swing.JPanel;
 
 public class MainScreen {
 
-	private JFrame frame;
+	private final JFrame frame;
 
-	private RaceDriverViewSection driverViewTab;
-	private RaceControlSection raceControlSection;
-	private RaceInfoSection raceInfoSection;
+	private final RaceDriverViewSection driverViewTab;
+	private final RaceControlSection raceControlSection;
+	private final RaceInfoSection raceInfoSection;
 	
 
 	public MainScreen(int initialSeconds) {

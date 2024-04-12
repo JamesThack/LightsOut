@@ -13,7 +13,7 @@ public class RegexAssist {
         int hours = Integer.parseInt(components[0]);
         int minutes = Integer.parseInt(components[1]);
         double seconds = Double.parseDouble(components[2]); // Include milliseconds
-        long totalMilliseconds = (long) ((hours * 60 * 60 + minutes * 60 + seconds) * 1000);
+        long totalMilliseconds = (long) (((long) hours * 60 * 60 + minutes * 60L + seconds) * 1000);
 
         return (int) totalMilliseconds / 1000;
     }

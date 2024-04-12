@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class RaceInfoSection {
 
-    private JPanel panel;
+    private final JPanel panel;
 
     public RaceInfoSection() {
         panel = new JPanel();

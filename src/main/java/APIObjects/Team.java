@@ -4,7 +4,7 @@ import java.awt.Color;
 
 public class Team {
 	
-	private String name;
+	private final String name;
 	private Color colour;
 	
 	public Team(String name) {

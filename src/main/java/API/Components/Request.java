@@ -11,19 +11,21 @@ import java.util.TreeMap;
 
 public class Request {
 
-    private ArrayList<String[]> responses;
+    private String[] responses;
 
     public Request(String request, String sessionKey) {
-        responses = new ArrayList<>();
         generateElements(request + "&session_key=" + sessionKey);
     }
 
+    public Request(String request) {
+        generateElements(request);
+    }
+
     public Request(String request, String sessionKey, String meetingKey) {
-        responses = new ArrayList<>();
         generateElements(request + "&session_key= " + sessionKey + "&meeting_key=" + meetingKey);
     }
 
-    public ArrayList<String[]> getResponses() {
+    public String[] getResponses() {
         return responses;
     }
 
@@ -40,10 +42,7 @@ public class Request {
 
             InputStreamReader in = new InputStreamReader(conn.getInputStream());
             BufferedReader br = new BufferedReader(in);
-            String output;
-            while ((output = br.readLine()) != null) {
-                responses.add(output.replace("}", "").split("\\{"));
-            }
+            responses = br.readLine().replace("}", "").split("\\{");
 
         } catch (Exception e) {
             e.printStackTrace();

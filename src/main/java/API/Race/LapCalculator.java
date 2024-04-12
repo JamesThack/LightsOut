@@ -1,18 +1,16 @@
 package API.Race;
 
+import API.Components.Request;
 import APIObjects.RegexAssist;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.TreeMap;
 
 public class LapCalculator {
 
 
-    private TreeMap<Integer, Integer> laps;
+    private final TreeMap<Integer, Integer> laps;
     private static LapCalculator instance;
+    private Request request;
 
     public static LapCalculator getInstance() {
         if (instance == null) instance = new LapCalculator();
@@ -22,60 +20,35 @@ public class LapCalculator {
     public LapCalculator() {
 
         laps = new TreeMap<>();
+        request = new Request("https://api.openf1.org/v1/laps?session_key=latest");
 
-        try {
-            URL url = new URL("https://api.openf1.org/v1/laps?session_key=latest");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.setRequestProperty("Accept", "application/json");
-            if (conn.getResponseCode() != 200) {
-                throw new RuntimeException("Failed : HTTP Error code : "
-                        + conn.getResponseCode());
-            }
-
-            InputStreamReader in = new InputStreamReader(conn.getInputStream());
-            BufferedReader br = new BufferedReader(in);
-            String output;
-            while ((output = br.readLine()) != null) {
-                String[] responses = output.replace("}", "").split("\\{");
-                for (String cur : responses) {
-                    String[] keyValuePairs = cur.split(",");
-                    int lapNumber = -1;
-                    int time = -1;
-                    for (String pair : keyValuePairs) {
-                        String[] keyValue = pair.split(":");
-                        if (keyValue.length < 2)continue;
-                        String key = keyValue[0].trim();
-                        String value = keyValue[1].trim().replace("]", "");
-                        switch (key) {
-                            case "\"date_start\"":
-                                if (value.equals("null")) continue;
-                                String timeRaw = pair.split("T")[1].replace("\"", "");
-                                time = RegexAssist.convertToUnix(timeRaw);
-                                break;
-                            case "\"lap_number\"":
-                                lapNumber = Integer.parseInt(value) - 1;
-                                break;
-                        }
-                    }
-                    if (lapNumber == -1 || time == -1) continue;
-                    if (laps.get(lapNumber) == null) {
-                        laps.put(lapNumber, time);
-                    } else {
-                        if (laps.get(lapNumber) >= time) laps.put(lapNumber, time);
-                    }
+        for (String cur : request.getResponses()) {
+            String[] keyValuePairs = cur.split(",");
+            int lapNumber = -1;
+            int time = -1;
+            for (String pair : keyValuePairs) {
+                String[] keyValue = pair.split(":");
+                if (keyValue.length < 2) continue;
+                String key = keyValue[0].trim();
+                String value = keyValue[1].trim().replace("]", "");
+                switch (key) {
+                    case "\"date_start\"":
+                        if (value.equals("null")) continue;
+                        String timeRaw = pair.split("T")[1].replace("\"", "");
+                        time = RegexAssist.convertToUnix(timeRaw);
+                        break;
+                    case "\"lap_number\"":
+                        lapNumber = Integer.parseInt(value) - 1;
+                        break;
                 }
             }
-
-            for (int cur : laps.keySet()) {
-                System.out.println("Lap " + cur + " is set at " + RegexAssist.convertToTimeString(laps.get(cur)));
+            if (lapNumber == -1 || time == -1) continue;
+            if (laps.get(lapNumber) == null) {
+                laps.put(lapNumber, time);
+            } else {
+                if (laps.get(lapNumber) >= time) laps.put(lapNumber, time);
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-
-
     }
 
     public int getLapFromTime(int time) {

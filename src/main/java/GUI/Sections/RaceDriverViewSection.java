@@ -10,8 +10,8 @@ import java.util.ArrayList;
 
 public class RaceDriverViewSection {
 
-    private JPanel driverView;
-    private ArrayList<JButton> driverButtons;
+    private final JPanel driverView;
+    private final ArrayList<JButton> driverButtons;
 
     public RaceDriverViewSection() {
 
@@ -34,7 +34,7 @@ public class RaceDriverViewSection {
             cur.setBackground(curDriver.getTeam().getColour());
             cur.setForeground(new Color(0,0,0));
             if (curDriver.getTeam().getName().contains("Red Bull") || curDriver.getTeam().getName().contains("Williams")) cur.setForeground(new Color(255, 255, 255));
-            cur.setText("P" + (count + 1) + ": " + curDriver.getStarter() + " " + String.valueOf(curDriver.getNumber()));
+            cur.setText("P" + (count + 1) + ": " + curDriver.getStarter() + " " + curDriver.getNumber());
             count +=1;
         }
     }

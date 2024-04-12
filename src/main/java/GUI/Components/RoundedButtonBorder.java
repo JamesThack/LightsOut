@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class RoundedButtonBorder implements Border {
 
-    private int radius;
+    private final int radius;
 
 
     public RoundedButtonBorder(int radius) {

@@ -2,9 +2,9 @@ package APIObjects;
 
 public class Driver {
 
-    private String name;
-    private int number;
-    private Team team;
+    private final String name;
+    private final int number;
+    private final Team team;
     private Tyre tyre;
 
     public Driver(String name, int number, Team team) {
@@ -18,7 +18,7 @@ public class Driver {
     }
     
     public String getStarter() {
-    	return(name.split(" ")[1].toCharArray()[0] + "" + name.split(" ")[1].toCharArray()[1] + ""+ name.split(" ")[1].toCharArray()[2] );
+    	return(name.split(" ")[1].toCharArray()[0] + "" + name.split(" ")[1].toCharArray()[1] + name.split(" ")[1].toCharArray()[2] );
     }
 
     public String getName() {
