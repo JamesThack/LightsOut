@@ -1,29 +1,40 @@
 package GUI;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.JFrame;
-import javax.swing.JTabbedPane;
+import javax.swing.*;
 
+import API.Race.Race;
+import APIObjects.RegexAssist;
+import GUI.Sections.DriverInfoSection;
 import GUI.Sections.RaceControlSection;
 import GUI.Sections.RaceDriverViewSection;
 import GUI.Sections.RaceInfoSection;
 
-import javax.swing.JPanel;
-
 public class MainScreen {
 
 	private final JFrame frame;
+	private JPanel driverContainer;
 
 	private final RaceDriverViewSection driverViewTab;
 	private final RaceControlSection raceControlSection;
 	private final RaceInfoSection raceInfoSection;
+
+	private static MainScreen instance;
+
+	public static MainScreen getInstance() {
+		if (instance == null) instance = new MainScreen(RegexAssist.convertToUnix("06:11:00"));
+
+		return instance;
+	}
 	
 
 	public MainScreen(int initialSeconds) {
 		frame = new JFrame();
 
-		driverViewTab = new RaceDriverViewSection();
+		driverViewTab = new RaceDriverViewSection(this);
 		raceControlSection = new RaceControlSection(initialSeconds);
 		raceInfoSection = new RaceInfoSection();
 
@@ -57,14 +68,14 @@ public class MainScreen {
 		tabbedPane.addTab("New tab", null, panel, null);
 		panel.setLayout(new BorderLayout(0, 0));
 		
-		JPanel panel_1 = new JPanel();
-		panel.add(panel_1, BorderLayout.CENTER);
+		driverContainer = new JPanel();
+		panel.add(driverContainer, BorderLayout.CENTER);
 		
 		
-		panel_1.setLayout(new BorderLayout(0, 0));
+		driverContainer.setLayout(new BorderLayout(0, 0));
 
 
-		panel_1.add(driverViewTab.getDriverView(), BorderLayout.CENTER);
+		driverContainer.add(driverViewTab.getDriverView(), BorderLayout.CENTER);
 		panel.add(raceControlSection.getPanel(), BorderLayout.SOUTH);
 		panel.add(raceInfoSection.getPanel(), BorderLayout.WEST);
 
@@ -72,6 +83,28 @@ public class MainScreen {
 	
 	private void generateDriverLayout() {
 		
+	}
+
+	public ActionListener getDriverInformation() {
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JButton button = (JButton) e.getSource();
+				driverContainer.removeAll();
+				DriverInfoSection section = new DriverInfoSection(Integer.parseInt( button.getText().split(" ")[2]));
+				driverContainer.add(section.getPanel());
+			}
+		};
+	}
+
+	public ActionListener reopenMainScreen() {
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				driverContainer.removeAll();
+				driverContainer.add(driverViewTab.getDriverView());
+			}
+		};
 	}
 	
 }

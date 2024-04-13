@@ -1,11 +1,15 @@
 package GUI.Sections;
 
+import API.Race.LapCalculator;
 import APIObjects.Driver;
 import API.Race.DriverPositions;
 import GUI.Components.RoundedButton;
+import GUI.MainScreen;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class RaceDriverViewSection {
@@ -13,7 +17,7 @@ public class RaceDriverViewSection {
     private final JPanel driverView;
     private final ArrayList<JButton> driverButtons;
 
-    public RaceDriverViewSection() {
+    public RaceDriverViewSection(MainScreen screen) {
 
         driverView = new JPanel();
         driverButtons = new ArrayList<>();
@@ -21,6 +25,7 @@ public class RaceDriverViewSection {
         for (Driver cur : DriverPositions.getInstance().getDriversInOrder(0)) {
             JButton newBut = new RoundedButton("", 200);
             newBut.setFont(new Font("Arial", Font.BOLD, 15));
+            newBut.addActionListener(screen.getDriverInformation());
             driverButtons.add(newBut);
             driverView.add(newBut);
         }
@@ -31,8 +36,10 @@ public class RaceDriverViewSection {
         int count = 0;
         for (JButton cur : driverButtons) {
             Driver curDriver = driverOrder.get(count);
+            System.out.println(curDriver.getName());
             cur.setBackground(curDriver.getTeam().getColour());
             cur.setForeground(new Color(0,0,0));
+            //Temporary
             if (curDriver.getTeam().getName().contains("Red Bull") || curDriver.getTeam().getName().contains("Williams")) cur.setForeground(new Color(255, 255, 255));
             cur.setText("P" + (count + 1) + ": " + curDriver.getStarter() + " " + curDriver.getNumber());
             count +=1;
@@ -48,6 +55,4 @@ public class RaceDriverViewSection {
         makeDriverNodes(driverView, seconds);
         driverView.validate();
     }
-
-
 }

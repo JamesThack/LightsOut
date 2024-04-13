@@ -2,6 +2,7 @@ package GUI.Sections;
 
 import API.Race.LapCalculator;
 import APIObjects.RegexAssist;
+import GUI.Components.RoundedButton;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,11 +28,11 @@ public class RaceControlSection {
     }
     
     public void updateView() {
-        jSeconds.setText("Race Time: " + RegexAssist.convertToTimeString(seconds));
+        jSeconds.setText("Race Time: " + RegexAssist.convertToTimeString(seconds) + "  ");
         jSeconds.validate();
         jSeconds.repaint();
 
-        jLaps.setText("Current Lap: " + LapCalculator.getInstance().getLapFromTime(seconds));
+        jLaps.setText("Current Lap: " + LapCalculator.getInstance().getLapFromTime(seconds) + "   ");
         jLaps.validate();
         jLaps.repaint();
     }
@@ -60,33 +61,39 @@ public class RaceControlSection {
     private void initialiseLayout() {
         panel = new JPanel();
         panel.setBackground(new Color(224, 27, 36));
+        panel.setLayout(new FlowLayout());
         
         jSeconds = new JLabel("Race Time: ");
         jSeconds.setForeground(new Color(255, 255, 255));
+        jSeconds.setFont(new Font("Arial", Font.BOLD, 20));
         panel.add(jSeconds);
 
         jLaps = new JLabel("Current Lap: ");
         jLaps.setForeground(new Color(255, 255, 255));
+        jLaps.setFont(new Font("Arial", Font.BOLD, 20));
         panel.add(jLaps);
 
-        loadNewButtons(new String[]{"▶", "⏸", "+5 Sec", "-5 Sec", "Set Time", "+1 Lap", "-1 Lap"},
+        loadNewButtons(new String[]{"▶", "⏸", "+5 Sec", "-5 Sec", "-1 Lap", "+1 Lap", "Set Time"},
                 new ActionListener[]{
                         getPlayPauseActionListener(false),
                         getPlayPauseActionListener(true),
                         getSecondsActionListener(+ 5),
                         getSecondsActionListener( -5),
-                        getSecondsSetActionListener(),
+                        getLapsActionListener(-1),
                         getLapsActionListener(1),
-                        getLapsActionListener(-1)});
+                        getSecondsSetActionListener(),});
 
         timeInput = new JTextArea();
         timeInput.setText(RegexAssist.convertToTimeString(seconds));
+        timeInput.setFont(new Font("Arial",  Font.BOLD, 18));
+        timeInput.setMargin(new Insets(3, 3, 3, 3));
         panel.add(timeInput);
     }
 
     private void loadNewButtons(String[] names, ActionListener[] listeners) {
         for (int i = 0; i< names.length; i++) {
-            JButton newBut = new JButton(names[i]);
+            JButton newBut = new RoundedButton(names[i], 60);
+            newBut.setBackground(new Color(255, 255, 255));
             newBut.addActionListener(listeners[i]);
             panel.add(newBut);
         }

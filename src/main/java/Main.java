@@ -8,7 +8,7 @@ public class Main {
 
     public static void main(String[] args) {
         
-        MainScreen window = new MainScreen(RegexAssist.convertToUnix("06:11:00"));
+        MainScreen window = MainScreen.getInstance();
         AsyncTimer asyncHandler = new AsyncTimer(window);
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(asyncHandler, 0, 1000);
