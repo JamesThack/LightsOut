@@ -3,6 +3,7 @@ package GUI.Sections;
 import API.Race.LapCalculator;
 import APIObjects.RegexAssist;
 import GUI.Components.RoundedButton;
+import GUI.MainScreen;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,6 +16,7 @@ public class RaceControlSection {
     private JLabel jLaps;
     private JPanel panel;
     private JTextArea timeInput;
+    private float zoomAmount;
 
     private int seconds;
     private boolean isPaused;
@@ -23,6 +25,8 @@ public class RaceControlSection {
 
         this.seconds = initialSeconds;
         isPaused = false;
+
+        zoomAmount = 1;
 
         initialiseLayout();
     }
@@ -50,6 +54,11 @@ public class RaceControlSection {
         updateView();
     }
 
+
+    public float getZoomAmount() {
+        return zoomAmount;
+    }
+
     public boolean getIsPaused() {
         return isPaused;
     }
@@ -73,15 +82,16 @@ public class RaceControlSection {
         jLaps.setFont(new Font("Arial", Font.BOLD, 20));
         panel.add(jLaps);
 
-        loadNewButtons(new String[]{"▶", "⏸", "+5 Sec", "-5 Sec", "-1 Lap", "+1 Lap", "Set Time"},
+        loadNewButtons(new String[]{"⏸", "+5 Sec", "-5 Sec", "-1 Lap", "+1 Lap", "Set Time", "Zoom +", "Zoom -"},
                 new ActionListener[]{
-                        getPlayPauseActionListener(false),
-                        getPlayPauseActionListener(true),
+                        getPlayPauseActionListener(),
                         getSecondsActionListener(+ 5),
                         getSecondsActionListener( -5),
                         getLapsActionListener(-1),
                         getLapsActionListener(1),
-                        getSecondsSetActionListener(),});
+                        getSecondsSetActionListener(),
+                        getZoomListener(0.2F),
+                        getZoomListener(-0.2F)});
 
         timeInput = new JTextArea();
         timeInput.setText(RegexAssist.convertToTimeString(seconds));
@@ -99,11 +109,15 @@ public class RaceControlSection {
         }
     }
 
-    public ActionListener getPlayPauseActionListener(boolean value) {
+    public ActionListener getPlayPauseActionListener() {
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                isPaused = value;
+                isPaused = !isPaused;
+
+                JButton button = (JButton) e.getSource();
+                if (isPaused) button.setText("▶");
+                if (!isPaused) button.setText("⏸");
             }
         };
     }
@@ -113,6 +127,7 @@ public class RaceControlSection {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setSeconds(seconds + modifier);
+                MainScreen.getInstance().updateWholeScreen();
             }
         };
     }
@@ -122,6 +137,7 @@ public class RaceControlSection {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setSeconds(RegexAssist.convertToUnix(timeInput.getText()));
+                MainScreen.getInstance().updateWholeScreen();
             }
         };
     }
@@ -131,6 +147,17 @@ public class RaceControlSection {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setSeconds(LapCalculator.getInstance().getTimeFromLap(getCurrentLap() + modifier) + 1);
+                MainScreen.getInstance().updateWholeScreen();
+            }
+        };
+    }
+
+    public ActionListener getZoomListener(float modifier) {
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                zoomAmount += modifier;
+                MainScreen.getInstance().updateWholeScreen();
             }
         };
     }

@@ -52,7 +52,6 @@ public class LapCalculator {
     }
 
     public int getLapFromTime(int time) {
-
         int prevLap = 1;
         for (int cur : laps.keySet()) {
             int curTime = laps.get(cur);

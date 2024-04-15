@@ -53,8 +53,17 @@ public class MainScreen {
 	public void setSeconds(int seconds) {
 		raceControlSection.setSeconds(seconds);
 
+		updateWholeScreen();
+
+	}
+
+	public float getZoomAmount() {
+		return raceControlSection.getZoomAmount();
+	}
+
+	public void updateWholeScreen() {
 		raceControlSection.updateView();
-		driverViewTab.updateDriverView(seconds);
+		driverViewTab.updateDriverView(getSeconds());
 	}
 
 	private void initialize() {
@@ -103,6 +112,7 @@ public class MainScreen {
 			public void actionPerformed(ActionEvent e) {
 				driverContainer.removeAll();
 				driverContainer.add(driverViewTab.getDriverView());
+				driverViewTab.updateDriverView(getSeconds());
 			}
 		};
 	}

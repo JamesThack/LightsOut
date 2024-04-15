@@ -23,8 +23,8 @@ public class RaceDriverViewSection {
         driverButtons = new ArrayList<>();
 
         for (Driver cur : DriverPositions.getInstance().getDriversInOrder(0)) {
-            JButton newBut = new RoundedButton("", 200);
-            newBut.setFont(new Font("Arial", Font.BOLD, 15));
+            JButton newBut = new RoundedButton("", 175);
+            newBut.setFont(new Font("Arial", Font.BOLD, 12));
             newBut.addActionListener(screen.getDriverInformation());
             driverButtons.add(newBut);
             driverView.add(newBut);
@@ -35,8 +35,9 @@ public class RaceDriverViewSection {
         ArrayList<Driver> driverOrder = DriverPositions.getInstance().getDriversInOrder(seconds);
         int count = 0;
         for (JButton cur : driverButtons) {
+            RoundedButton round = (RoundedButton) cur;
+            round.setBorderRadius(round.getBorderRadius());
             Driver curDriver = driverOrder.get(count);
-            System.out.println(curDriver.getName());
             cur.setBackground(curDriver.getTeam().getColour());
             cur.setForeground(new Color(0,0,0));
             //Temporary
