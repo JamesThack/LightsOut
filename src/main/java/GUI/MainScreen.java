@@ -8,6 +8,7 @@ import javax.swing.*;
 
 import API.Components.Session;
 import API.Race.Race;
+import API.Race.Tyres;
 import API.Speech;
 import APIObjects.RegexAssist;
 import GUI.Sections.*;
@@ -26,6 +27,8 @@ public class MainScreen {
 
 	private Session session;
 
+	private Tyres tyreHandler;
+
 	private static MainScreen instance;
 
 	private Speech speechHandler;
@@ -42,7 +45,7 @@ public class MainScreen {
 
 		raceControlSection = new RaceControlSection(this);
 		raceSelectorSection = new RaceSelectorSection();
-		raceInfoSection = new RaceInfoSection();
+		raceInfoSection = new RaceInfoSection(this);
 
 		speechHandler = new Speech();
 
@@ -71,6 +74,7 @@ public class MainScreen {
 
 	public void setSession(Session session) {
 		this.session = session;
+		tyreHandler = new Tyres(session);
 		driverContainer.removeAll();
 		driverViewTab = new RaceDriverViewSection(this);
 		driverContainer.add(driverViewTab.getDriverView());
@@ -78,6 +82,7 @@ public class MainScreen {
 		controllerContainer.remove(raceControlSection.getPanel());
 		raceControlSection = new RaceControlSection(this);
 		controllerContainer.add(raceControlSection.getPanel(), BorderLayout.SOUTH);
+		raceInfoSection.addComponents();
 	}
 
 	public void updateWholeScreen() {
@@ -113,6 +118,15 @@ public class MainScreen {
 
 	public Speech getSpeechHandler() {
 		return speechHandler;
+	}
+
+	public Tyres getTyreHandler() {
+		return tyreHandler;
+	}
+
+	public int getCurrentLap() {
+		if (raceControlSection != null) return raceControlSection.getCurrentLap();
+		return 1;
 	}
 
 	public Session getSession() {

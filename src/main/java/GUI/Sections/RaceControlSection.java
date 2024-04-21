@@ -1,5 +1,6 @@
 package GUI.Sections;
 
+import API.Components.SpeechRequest;
 import API.Race.LapCalculator;
 import APIObjects.RegexAssist;
 import GUI.Components.RoundedButton;
@@ -63,7 +64,7 @@ public class RaceControlSection {
 
     public void setSeconds(int seconds) {
 
-        if (lapCalculator != null && lapCalculator.getLapFromTime(this.seconds) != lapCalculator.getLapFromTime(seconds)) mainScreen.getSpeechHandler().speakText("Now on lap " + lapCalculator.getLapFromTime(seconds));
+        if (lapCalculator != null && lapCalculator.getLapFromTime(this.seconds) != lapCalculator.getLapFromTime(seconds)) mainScreen.getSpeechHandler().addSpeech(new SpeechRequest(-1, "Now on lap " + lapCalculator.getLapFromTime(seconds), -1));
         this.seconds = seconds;
     }
 
@@ -96,7 +97,7 @@ public class RaceControlSection {
         jLaps.setFont(new Font("Arial", Font.BOLD, 20));
         panel.add(jLaps);
 
-        loadNewButtons(new String[]{"⏸", "+5 Sec", "-5 Sec", "-1 Lap", "+1 Lap", "Zoom +", "Zoom -", "Race"},
+        loadNewButtons(new String[]{"⏸", "+5 Sec", "-5 Sec", "-1 Lap", "+1 Lap", "Zoom +", "Zoom -", "Menu"},
                 new ActionListener[]{
                         getPlayPauseActionListener(),
                         getSecondsActionListener(+ 5),

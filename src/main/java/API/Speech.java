@@ -26,7 +26,7 @@ public class Speech {
 
     public void checkSpeech() {
         for (SpeechRequest cur : cachedSpeech.values()) {
-            if (cur.getDelay() <= 0) speak(cur);
+            if (cur.getDelay() <= 0 && !isSpeaking) speak(cur);
         }
     }
 
@@ -35,10 +35,18 @@ public class Speech {
 
     }
 
+    private int getHighestPriorityItem() {
+        int highest = 100;
+        for (SpeechRequest cur : cachedSpeech.values()) {
+            if (cur.getPriority() < highest) highest = cur.getPriority();
+        }
+        return highest;
+    }
+
     private void speak(SpeechRequest speech) {
         Thread speechThread = new Thread(new Runnable() {
             public void run() {
-                if (!isSpeaking) {
+                if (getHighestPriorityItem() >= speech.getPriority()) {
                     isSpeaking = true;
                     narrator.speak(speech.getMessage());
                     cachedSpeech.remove(speech.getDriver());

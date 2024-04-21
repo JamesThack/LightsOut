@@ -8,11 +8,13 @@ public class SpeechRequest {
     private int driver;
     private String message;
     private int delay;
+    private int priority;
 
-    public SpeechRequest(int driver, String message) {
+    public SpeechRequest(int driver, String message, int priority) {
         this.driver = driver;
         this.message = message;
-        this.delay = 3;
+        this.delay = 2;
+        this.priority = priority;
 
     }
 
@@ -31,5 +33,9 @@ public class SpeechRequest {
 
     public void setDelay(int delay) {
         this.delay = delay;
+    }
+
+    public int getPriority() {
+        return priority;
     }
 }

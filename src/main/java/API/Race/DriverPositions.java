@@ -100,7 +100,7 @@ public class DriverPositions {
             int newDriver = driverPos.get(cur);
             if (newDriver != pastDriverPositions.get(cur)) {
                 Driver driver = DriverAPI.getInstance().getDriver(newDriver);
-                SpeechRequest request = new SpeechRequest(newDriver, driver.getName() + " is now in position " + cur);
+                SpeechRequest request = new SpeechRequest(newDriver, driver.getName() + " is now in position " + cur, cur);
                 MainScreen.getInstance().getSpeechHandler().addSpeech(request);
             }
         }
