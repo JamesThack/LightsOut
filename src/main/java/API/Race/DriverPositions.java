@@ -1,6 +1,7 @@
 package API.Race;
 
 import API.Components.Request;
+import API.Components.Session;
 import API.DriverAPI;
 import APIObjects.Driver;
 import APIObjects.RegexAssist;
@@ -15,15 +16,16 @@ public class DriverPositions {
     private static DriverPositions instance;
     private final Request request;
 
-    public static DriverPositions getInstance() {
-        if (instance == null) instance = new DriverPositions();
-        return instance;
-    }
+//    public static DriverPositions getInstance() {
+//        if (instance == null) instance = new DriverPositions();
+//        return instance;
+//    }
 
-    public DriverPositions() {
+    public DriverPositions(Session session) {
 
         positions = new HashMap<>();
-        request = new Request("https://api.openf1.org/v1/position?meeting_key=latest", "latest");
+
+        request = new Request("https://api.openf1.org/v1/position", session.getSessionKey());
 
         for (String cur : request.getResponses()) {
             String[] keyValuePairs = cur.split(",");
@@ -49,7 +51,8 @@ public class DriverPositions {
                 }
             }
 
-            if (positions.get(number) == null) {
+            if (number == 0) continue;
+            if (  positions.get(number) == null) {
                 TreeMap<Integer, Integer> newPos = new TreeMap<>();
                 newPos.put(time, position);
                 positions.put(number, newPos);
@@ -81,9 +84,9 @@ public class DriverPositions {
 
         TreeMap<Integer, Integer> driverPos = new TreeMap<>();
 
-        for (Driver driver : DriverAPI.getInstance().getDrivers()) {
-            int driverNumber = driver.getNumber();
-            driverPos.put(getDriverPosAt(driverNumber, time), driverNumber);
+        for (int cur : positions.keySet()) {
+            Driver driver = DriverAPI.getInstance().getDriver(cur);
+            driverPos.put(getDriverPosAt(cur, time), cur);
         }
         return driverPos;
     }

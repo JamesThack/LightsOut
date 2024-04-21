@@ -9,6 +9,7 @@ public class Team {
 	
 	public Team(String name) {
 		this.name = name;
+		System.out.println(name);
 		setColour();
 	}
 
@@ -30,7 +31,7 @@ public class Team {
 			colour = new Color(0,0,255);
 		} else if (name.contains("Red Bull Racing")) {
 			colour = new Color(0,0,128);
-		} else if (name.contains("RB")) {
+		} else if (name.contains("RB") || name.contains("AlphaTauri")) {
 			colour = new Color(255, 255, 255);
 		} else if (name.contains("McLaren")) {
 			colour = new Color(255,165,0);
@@ -40,7 +41,7 @@ public class Team {
 			colour = new Color(0,100,0);
 		} else if (name.contains("Haas F1 Team")) {
 			colour = new Color(178,34,34);
-		} else if (name.contains("Kick Sauber")) {
+		} else if (name.contains("Kick Sauber") || name.contains("Alfa Romeo")) {
 			colour = new Color(0,255,0);
 		} else if (name.contains("Mercedes")) {
 			colour = new Color(0,206,209);

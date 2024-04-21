@@ -18,7 +18,9 @@ public class Driver {
     }
     
     public String getStarter() {
-    	return(name.split(" ")[1].toCharArray()[0] + "" + name.split(" ")[1].toCharArray()[1] + name.split(" ")[1].toCharArray()[2] );
+        if (name.split(" ").length <=2) return(name.split(" ")[1].toCharArray()[0] + "" + name.split(" ")[1].toCharArray()[1] + name.split(" ")[1].toCharArray()[2] );
+        return(name.split(" ")[2].toCharArray()[0] + "" + name.split(" ")[2].toCharArray()[1] + name.split(" ")[2].toCharArray()[2] );
+
     }
 
     public String getName() {

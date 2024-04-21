@@ -51,7 +51,6 @@ public class RaceControlSection {
 
     public void setSeconds(int seconds) {
         this.seconds = seconds;
-        updateView();
     }
 
 

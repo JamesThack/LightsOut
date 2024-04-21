@@ -16,13 +16,16 @@ public class RaceDriverViewSection {
 
     private final JPanel driverView;
     private final ArrayList<JButton> driverButtons;
+    private DriverPositions driverPositions;
 
     public RaceDriverViewSection(MainScreen screen) {
 
         driverView = new JPanel();
         driverButtons = new ArrayList<>();
 
-        for (Driver cur : DriverPositions.getInstance().getDriversInOrder(0)) {
+        driverPositions = new DriverPositions(screen.getSession());
+
+        for (Driver cur : driverPositions.getDriversInOrder(0)) {
             JButton newBut = new RoundedButton("", 175);
             newBut.setFont(new Font("Arial", Font.BOLD, 12));
             newBut.addActionListener(screen.getDriverInformation());
@@ -32,7 +35,7 @@ public class RaceDriverViewSection {
     }
 
     private void makeDriverNodes(JPanel panel, int seconds) {
-        ArrayList<Driver> driverOrder = DriverPositions.getInstance().getDriversInOrder(seconds);
+        ArrayList<Driver> driverOrder = driverPositions.getDriversInOrder(seconds);
         int count = 0;
         for (JButton cur : driverButtons) {
             RoundedButton round = (RoundedButton) cur;

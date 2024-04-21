@@ -6,21 +6,22 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import API.Components.Session;
 import API.Race.Race;
 import APIObjects.RegexAssist;
-import GUI.Sections.DriverInfoSection;
-import GUI.Sections.RaceControlSection;
-import GUI.Sections.RaceDriverViewSection;
-import GUI.Sections.RaceInfoSection;
+import GUI.Sections.*;
 
 public class MainScreen {
 
 	private final JFrame frame;
 	private JPanel driverContainer;
 
-	private final RaceDriverViewSection driverViewTab;
+	private RaceDriverViewSection driverViewTab;
 	private final RaceControlSection raceControlSection;
 	private final RaceInfoSection raceInfoSection;
+	private RaceSelectorSection raceSelectorSection;
+
+	private Session session;
 
 	private static MainScreen instance;
 
@@ -34,7 +35,7 @@ public class MainScreen {
 	public MainScreen(int initialSeconds) {
 		frame = new JFrame();
 
-		driverViewTab = new RaceDriverViewSection(this);
+		raceSelectorSection = new RaceSelectorSection();
 		raceControlSection = new RaceControlSection(initialSeconds);
 		raceInfoSection = new RaceInfoSection();
 
@@ -61,9 +62,20 @@ public class MainScreen {
 		return raceControlSection.getZoomAmount();
 	}
 
-	public void updateWholeScreen() {
-		raceControlSection.updateView();
+	public void setSession(Session session) {
+		this.session = session;
+		driverContainer.removeAll();
+		driverViewTab = new RaceDriverViewSection(this);
+		driverContainer.add(driverViewTab.getDriverView());
 		driverViewTab.updateDriverView(getSeconds());
+	}
+
+	public void updateWholeScreen() {
+
+		if (driverViewTab != null) {
+			driverViewTab.updateDriverView(getSeconds());
+			raceControlSection.updateView();
+		}
 	}
 
 	private void initialize() {
@@ -84,14 +96,14 @@ public class MainScreen {
 		driverContainer.setLayout(new BorderLayout(0, 0));
 
 
-		driverContainer.add(driverViewTab.getDriverView(), BorderLayout.CENTER);
+		driverContainer.add(raceSelectorSection.getPanel(), BorderLayout.CENTER);
 		panel.add(raceControlSection.getPanel(), BorderLayout.SOUTH);
 		panel.add(raceInfoSection.getPanel(), BorderLayout.WEST);
 
 	}
-	
-	private void generateDriverLayout() {
-		
+
+	public Session getSession() {
+		return session;
 	}
 
 	public ActionListener getDriverInformation() {

@@ -14,7 +14,7 @@ public class DriverAPI {
     private Request request;
 
     public DriverAPI() {
-        regenerateDriverList();
+        regenerateDriverList("latest");
     }
 
     public Driver getDriver(String driverName) {
@@ -39,10 +39,10 @@ public class DriverAPI {
         return drivers;
     }
 
-    public void regenerateDriverList() {
+    public void regenerateDriverList(String sessionKey) {
 
         drivers = new ArrayList<Driver>();
-        request = new Request("https://api.openf1.org/v1/drivers?session_key=9472");
+        request = new Request("https://api.openf1.org/v1/drivers?session_key=" + sessionKey);
 
         for (String cur : request.getResponses()) {
             String[] keyValuePairs = cur.split(",");

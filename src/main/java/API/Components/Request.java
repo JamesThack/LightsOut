@@ -14,7 +14,7 @@ public class Request {
     private String[] responses;
 
     public Request(String request, String sessionKey) {
-        generateElements(request + "&session_key=" + sessionKey);
+        generateElements(request + "?session_key=" + sessionKey);
     }
 
     public Request(String request) {
