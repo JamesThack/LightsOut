@@ -8,6 +8,7 @@ import javax.swing.*;
 
 import API.Components.Session;
 import API.Race.Race;
+import API.Speech;
 import APIObjects.RegexAssist;
 import GUI.Sections.*;
 
@@ -27,6 +28,8 @@ public class MainScreen {
 
 	private static MainScreen instance;
 
+	private Speech speechHandler;
+
 	public static MainScreen getInstance() {
 		if (instance == null) instance = new MainScreen(RegexAssist.convertToUnix("06:11:00"));
 
@@ -40,6 +43,8 @@ public class MainScreen {
 		raceControlSection = new RaceControlSection(this);
 		raceSelectorSection = new RaceSelectorSection();
 		raceInfoSection = new RaceInfoSection();
+
+		speechHandler = new Speech();
 
 		initialize();
 		frame.setVisible(true);
@@ -104,6 +109,10 @@ public class MainScreen {
 		driverContainer.add(raceSelectorSection.getPanel(), BorderLayout.CENTER);
 		controllerContainer.add(raceInfoSection.getPanel(), BorderLayout.WEST);
 
+	}
+
+	public Speech getSpeechHandler() {
+		return speechHandler;
 	}
 
 	public Session getSession() {

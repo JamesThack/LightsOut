@@ -62,6 +62,8 @@ public class RaceControlSection {
     }
 
     public void setSeconds(int seconds) {
+
+        if (lapCalculator != null && lapCalculator.getLapFromTime(this.seconds) != lapCalculator.getLapFromTime(seconds)) mainScreen.getSpeechHandler().speakText("Now on lap " + lapCalculator.getLapFromTime(seconds));
         this.seconds = seconds;
     }
 
@@ -122,6 +124,7 @@ public class RaceControlSection {
                 isPaused = !isPaused;
 
                 JButton button = (JButton) e.getSource();
+
                 if (isPaused) button.setText("▶");
                 if (!isPaused) button.setText("⏸");
             }

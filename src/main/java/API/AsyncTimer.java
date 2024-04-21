@@ -15,8 +15,10 @@ public class AsyncTimer extends TimerTask {
 
 	@Override
 	public void run() {
-		if (!menu.isPaused()) menu.setSeconds(menu.getSeconds() + 1);
-		
+		if (!menu.isPaused()) {
+			menu.setSeconds(menu.getSeconds() + 1);
+			menu.getSpeechHandler().checkSpeech();
+		}
 	}
 	
 }

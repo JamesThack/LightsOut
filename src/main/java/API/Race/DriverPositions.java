@@ -2,9 +2,11 @@ package API.Race;
 
 import API.Components.Request;
 import API.Components.Session;
+import API.Components.SpeechRequest;
 import API.DriverAPI;
 import APIObjects.Driver;
 import APIObjects.RegexAssist;
+import GUI.MainScreen;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,6 +17,7 @@ public class DriverPositions {
     private final HashMap<Integer, TreeMap<Integer, Integer>> positions;
     private static DriverPositions instance;
     private final Request request;
+    private TreeMap<Integer, Integer> pastDriverPositions;
 
 //    public static DriverPositions getInstance() {
 //        if (instance == null) instance = new DriverPositions();
@@ -88,6 +91,20 @@ public class DriverPositions {
             Driver driver = DriverAPI.getInstance().getDriver(cur);
             driverPos.put(getDriverPosAt(cur, time), cur);
         }
+        if (pastDriverPositions == null) {
+            pastDriverPositions = driverPos;
+            return driverPos;
+        }
+
+        for (int cur : driverPos.keySet()) {
+            int newDriver = driverPos.get(cur);
+            if (newDriver != pastDriverPositions.get(cur)) {
+                Driver driver = DriverAPI.getInstance().getDriver(newDriver);
+                SpeechRequest request = new SpeechRequest(newDriver, driver.getName() + " is now in position " + cur);
+                MainScreen.getInstance().getSpeechHandler().addSpeech(request);
+            }
+        }
+        pastDriverPositions = driverPos;
         return driverPos;
     }
 

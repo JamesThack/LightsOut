@@ -7,6 +7,9 @@ import API.Components.Session;
 import API.Race.RaceSelector;
 import GUI.MainScreen;
 import APIObjects.RegexAssist;
+import com.sun.speech.freetts.Voice;
+import com.sun.speech.freetts.VoiceManager;
+
 
 public class Main {
 
