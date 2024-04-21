@@ -16,8 +16,10 @@ public class MainScreen {
 	private final JFrame frame;
 	private JPanel driverContainer;
 
+	private JPanel controllerContainer;
+
 	private RaceDriverViewSection driverViewTab;
-	private final RaceControlSection raceControlSection;
+	private RaceControlSection raceControlSection;
 	private final RaceInfoSection raceInfoSection;
 	private RaceSelectorSection raceSelectorSection;
 
@@ -35,8 +37,8 @@ public class MainScreen {
 	public MainScreen(int initialSeconds) {
 		frame = new JFrame();
 
+		raceControlSection = new RaceControlSection(this);
 		raceSelectorSection = new RaceSelectorSection();
-		raceControlSection = new RaceControlSection(initialSeconds);
 		raceInfoSection = new RaceInfoSection();
 
 		initialize();
@@ -68,6 +70,9 @@ public class MainScreen {
 		driverViewTab = new RaceDriverViewSection(this);
 		driverContainer.add(driverViewTab.getDriverView());
 		driverViewTab.updateDriverView(getSeconds());
+		controllerContainer.remove(raceControlSection.getPanel());
+		raceControlSection = new RaceControlSection(this);
+		controllerContainer.add(raceControlSection.getPanel(), BorderLayout.SOUTH);
 	}
 
 	public void updateWholeScreen() {
@@ -85,20 +90,19 @@ public class MainScreen {
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		frame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
 		
-		JPanel panel = new JPanel();
-		tabbedPane.addTab("New tab", null, panel, null);
-		panel.setLayout(new BorderLayout(0, 0));
+		controllerContainer = new JPanel();
+		tabbedPane.addTab("New tab", null, controllerContainer, null);
+		controllerContainer.setLayout(new BorderLayout(0, 0));
 		
 		driverContainer = new JPanel();
-		panel.add(driverContainer, BorderLayout.CENTER);
+		controllerContainer.add(driverContainer, BorderLayout.CENTER);
 		
 		
 		driverContainer.setLayout(new BorderLayout(0, 0));
 
 
 		driverContainer.add(raceSelectorSection.getPanel(), BorderLayout.CENTER);
-		panel.add(raceControlSection.getPanel(), BorderLayout.SOUTH);
-		panel.add(raceInfoSection.getPanel(), BorderLayout.WEST);
+		controllerContainer.add(raceInfoSection.getPanel(), BorderLayout.WEST);
 
 	}
 
@@ -125,6 +129,20 @@ public class MainScreen {
 				driverContainer.removeAll();
 				driverContainer.add(driverViewTab.getDriverView());
 				driverViewTab.updateDriverView(getSeconds());
+			}
+		};
+	}
+
+	public ActionListener changeRace() {
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				driverContainer.removeAll();
+				driverContainer.add(raceSelectorSection.getPanel());
+				driverViewTab = null;
+				raceSelectorSection.redrawComponents();
+				controllerContainer.remove(raceControlSection.getPanel());
+				updateWholeScreen();
 			}
 		};
 	}

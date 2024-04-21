@@ -15,16 +15,28 @@ public class RaceControlSection {
     private JLabel jSeconds;
     private JLabel jLaps;
     private JPanel panel;
-    private JTextArea timeInput;
     private float zoomAmount;
+
+    private LapCalculator lapCalculator;
 
     private int seconds;
     private boolean isPaused;
-    
-    public RaceControlSection(int initialSeconds) {
 
-        this.seconds = initialSeconds;
+    private MainScreen mainScreen;
+    
+    public RaceControlSection(MainScreen mainScreen) {
+
+
+        this.mainScreen = mainScreen;
+
         isPaused = false;
+
+        if(mainScreen.getSession() != null) {
+            lapCalculator = new LapCalculator(mainScreen.getSession().getStartTime(), mainScreen.getSession().getSessionKey());
+            this.seconds = lapCalculator.getTimeFromLap(1);
+        } else {
+            this.seconds = 0;
+        }
 
         zoomAmount = 1;
 
@@ -36,7 +48,7 @@ public class RaceControlSection {
         jSeconds.validate();
         jSeconds.repaint();
 
-        jLaps.setText("Current Lap: " + LapCalculator.getInstance().getLapFromTime(seconds) + "   ");
+        if (lapCalculator != null)jLaps.setText("Current Lap: " + lapCalculator.getLapFromTime(seconds) + "   ");
         jLaps.validate();
         jLaps.repaint();
     }
@@ -63,7 +75,8 @@ public class RaceControlSection {
     }
 
     public int getCurrentLap() {
-        return LapCalculator.getInstance().getLapFromTime(seconds);
+        if (lapCalculator != null) return lapCalculator.getLapFromTime(seconds);
+        return 1;
     }
 
     private void initialiseLayout() {
@@ -81,22 +94,16 @@ public class RaceControlSection {
         jLaps.setFont(new Font("Arial", Font.BOLD, 20));
         panel.add(jLaps);
 
-        loadNewButtons(new String[]{"⏸", "+5 Sec", "-5 Sec", "-1 Lap", "+1 Lap", "Set Time", "Zoom +", "Zoom -"},
+        loadNewButtons(new String[]{"⏸", "+5 Sec", "-5 Sec", "-1 Lap", "+1 Lap", "Zoom +", "Zoom -", "Race"},
                 new ActionListener[]{
                         getPlayPauseActionListener(),
                         getSecondsActionListener(+ 5),
                         getSecondsActionListener( -5),
                         getLapsActionListener(-1),
                         getLapsActionListener(1),
-                        getSecondsSetActionListener(),
                         getZoomListener(0.2F),
-                        getZoomListener(-0.2F)});
-
-        timeInput = new JTextArea();
-        timeInput.setText(RegexAssist.convertToTimeString(seconds));
-        timeInput.setFont(new Font("Arial",  Font.BOLD, 18));
-        timeInput.setMargin(new Insets(3, 3, 3, 3));
-        panel.add(timeInput);
+                        getZoomListener(-0.2F),
+                        mainScreen.changeRace()});
     }
 
     private void loadNewButtons(String[] names, ActionListener[] listeners) {
@@ -131,21 +138,11 @@ public class RaceControlSection {
         };
     }
 
-    public ActionListener getSecondsSetActionListener() {
-        return new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setSeconds(RegexAssist.convertToUnix(timeInput.getText()));
-                MainScreen.getInstance().updateWholeScreen();
-            }
-        };
-    }
-
     public ActionListener getLapsActionListener(int modifier) {
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                setSeconds(LapCalculator.getInstance().getTimeFromLap(getCurrentLap() + modifier) + 1);
+                if(lapCalculator != null) setSeconds(lapCalculator.getTimeFromLap(getCurrentLap() + modifier) + 1);
                 MainScreen.getInstance().updateWholeScreen();
             }
         };

@@ -3,6 +3,7 @@ package GUI.Sections;
 import API.Race.LapCalculator;
 import APIObjects.Driver;
 import API.Race.DriverPositions;
+import APIObjects.RegexAssist;
 import GUI.Components.RoundedButton;
 import GUI.MainScreen;
 

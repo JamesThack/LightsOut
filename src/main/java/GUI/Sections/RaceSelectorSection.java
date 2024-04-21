@@ -24,6 +24,11 @@ public class RaceSelectorSection {
         initialise();
     }
 
+    public void redrawComponents() {
+        panel.removeAll();
+        addInRaces();
+    }
+
     public JPanel getPanel() {
         return panel;
     }

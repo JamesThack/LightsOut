@@ -12,15 +12,12 @@ public class LapCalculator {
     private static LapCalculator instance;
     private Request request;
 
-    public static LapCalculator getInstance() {
-        if (instance == null) instance = new LapCalculator();
-        return instance;
-    }
-
-    public LapCalculator() {
+    public LapCalculator(int startTime, String sessionKey) {
 
         laps = new TreeMap<>();
-        request = new Request("https://api.openf1.org/v1/laps?session_key=latest");
+        request = new Request("https://api.openf1.org/v1/laps", sessionKey);
+
+        laps.put(1, startTime);
 
         for (String cur : request.getResponses()) {
             String[] keyValuePairs = cur.split(",");
@@ -38,7 +35,7 @@ public class LapCalculator {
                         time = RegexAssist.convertToUnix(timeRaw);
                         break;
                     case "\"lap_number\"":
-                        lapNumber = Integer.parseInt(value) - 1;
+                        lapNumber = Integer.parseInt(value);
                         break;
                 }
             }
