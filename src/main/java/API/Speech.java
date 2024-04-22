@@ -3,7 +3,6 @@ package API;
 import API.Components.SpeechRequest;
 import com.sun.speech.freetts.Voice;
 import com.sun.speech.freetts.VoiceManager;
-import com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -65,5 +64,9 @@ public class Speech {
             }
         });
         speechThread.start();
+    }
+
+    public void clearCache() {
+        cachedSpeech.clear();
     }
 }

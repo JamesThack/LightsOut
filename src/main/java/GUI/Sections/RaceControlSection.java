@@ -97,7 +97,7 @@ public class RaceControlSection {
         jLaps.setFont(new Font("Arial", Font.BOLD, 20));
         panel.add(jLaps);
 
-        loadNewButtons(new String[]{"⏸", "+5 Sec", "-5 Sec", "-1 Lap", "+1 Lap", "Zoom +", "Zoom -", "Menu"},
+        loadNewButtons(new String[]{"⏸", "+5 Sec", "-5 Sec", "-1 Lap", "+1 Lap", "Zoom +", "Zoom -", "Menu", "Clear"},
                 new ActionListener[]{
                         getPlayPauseActionListener(),
                         getSecondsActionListener(+ 5),
@@ -106,7 +106,8 @@ public class RaceControlSection {
                         getLapsActionListener(1),
                         getZoomListener(0.2F),
                         getZoomListener(-0.2F),
-                        mainScreen.changeRace()});
+                        mainScreen.changeRace(),
+                        clearCacheListener()});
     }
 
     private void loadNewButtons(String[] names, ActionListener[] listeners) {
@@ -158,6 +159,15 @@ public class RaceControlSection {
             public void actionPerformed(ActionEvent e) {
                 zoomAmount += modifier;
                 MainScreen.getInstance().updateWholeScreen();
+            }
+        };
+    }
+
+    public ActionListener clearCacheListener() {
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainScreen.getInstance().getSpeechHandler().clearCache();
             }
         };
     }

@@ -66,4 +66,8 @@ public class RaceDriverViewSection {
         makeDriverNodes(driverView, seconds);
         driverView.validate();
     }
+
+    public void clearCache() {
+        driverPositions.clearCachedDrivers();
+    }
 }

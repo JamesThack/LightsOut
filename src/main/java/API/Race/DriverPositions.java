@@ -108,6 +108,10 @@ public class DriverPositions {
         return driverPos;
     }
 
+    public void clearCachedDrivers() {
+        pastDriverPositions = null;
+    }
+
     public void printDriverPositionsAt(int time) {
         TreeMap<Integer, Integer> timings = getAllDriverPositions(time);
 

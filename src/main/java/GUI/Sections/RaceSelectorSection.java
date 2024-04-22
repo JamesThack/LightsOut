@@ -38,6 +38,8 @@ public class RaceSelectorSection {
     }
 
     private void addInRaces() {
+        JButton noLive = new JButton("NO LIVE RACE DETECTED");
+        panel.add(noLive);
         for (Session cur : selector.getAllSessions()) {
             JButton newBut = new JButton();
             newBut.setText(cur.getName() + " - " + cur.getDate().split("-")[0]);

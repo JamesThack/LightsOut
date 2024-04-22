@@ -160,6 +160,8 @@ public class MainScreen {
 		return new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				speechHandler.clearCache();
+				driverViewTab.clearCache();
 				driverContainer.removeAll();
 				driverContainer.add(raceSelectorSection.getPanel());
 				driverViewTab = null;

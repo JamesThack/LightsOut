@@ -41,6 +41,9 @@ public class Tyres {
                     case "\"lap_start\"":
                         time =  Integer.valueOf(value);
                         break;
+                    case "\"lap_end\"":
+                        time =  Integer.valueOf(value);
+                        break;
                 }
             }
 
@@ -57,6 +60,7 @@ public class Tyres {
 
     public String getTyreAt(int driver, int lap) {
         String lastPos = "";
+        if (tyres.get(driver) == null) return "MEDIUM";
         for (int cur : tyres.get(driver).keySet()) {
             if (lap >= cur || lastPos == "") {
                 lastPos = tyres.get(driver).get(cur);
