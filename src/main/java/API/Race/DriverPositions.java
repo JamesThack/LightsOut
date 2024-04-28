@@ -97,13 +97,18 @@ public class DriverPositions {
             return driverPos;
         }
 
-        for (int cur : driverPos.keySet()) {
-            int newDriver = driverPos.get(cur);
-            if (newDriver != pastDriverPositions.get(cur)) {
-                Driver driver = DriverAPI.getInstance().getDriver(newDriver);
-                SpeechRequest request = new SpeechRequest(newDriver, driver.getName() + " " +  AccountHandler.getInstance().getSpeech("newposition") + " " +  + cur, cur);
-                if (AccountHandler.getInstance().getOption("overtakenarrate")) MainScreen.getInstance().getSpeechHandler().addSpeech(request);
+        try {
+            for (int cur : driverPos.keySet()) {
+                int newDriver = driverPos.get(cur);
+                if (newDriver != pastDriverPositions.get(cur)) {
+                    Driver driver = DriverAPI.getInstance().getDriver(newDriver);
+                    SpeechRequest request = new SpeechRequest(newDriver, driver.getName() + " " + AccountHandler.getInstance().getSpeech("newposition") + " " + +cur, cur);
+                    if (AccountHandler.getInstance().getOption("overtakenarrate"))
+                        MainScreen.getInstance().getSpeechHandler().addSpeech(request);
+                }
             }
+        } catch (Exception e) {
+
         }
         pastDriverPositions = driverPos;
         return driverPos;

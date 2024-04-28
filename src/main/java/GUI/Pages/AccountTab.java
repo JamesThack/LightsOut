@@ -20,6 +20,11 @@ public class AccountTab {
     private JPanel right;
     private JPanel center;
 
+    private JTextArea usernameInput;
+    private JTextArea firstNameInput;
+    private JTextArea surnameInput;
+    private JPasswordField passwordInput;
+
     HashMap<String, JTextArea> speechInput;
 
     public AccountTab(MainScreen mainScreen, JPanel panel) {
@@ -54,26 +59,27 @@ public class AccountTab {
         quickAddLabel("Options", right, 0, 0, new Insets(0, 100, 250, 100));
 
         quickAddLabel("Username", left,0, 1);
-        quickAddTextInput("Hi", left, 0, 2);
+        usernameInput = quickAddTextInput("", left, 0, 2);
         quickAddLabel("First Name", left, 0, 3);
-        quickAddTextInput("", left, 0, 4);
+        firstNameInput = quickAddTextInput("", left, 0, 4);
         quickAddLabel("Surname", left, 0, 5);
-        quickAddTextInput("", left, 0, 6);
+        surnameInput = quickAddTextInput("", left, 0, 6);
         quickAddLabel("Password", left, 0, 7);
 
-        JPasswordField field = new JPasswordField("");
-        field.setPreferredSize(new Dimension(400, 30));
-        field.setFont(new Font("Arial", Font.PLAIN, 19));
-        field.setBorder(new LineBorder(Color.black,2));
+        passwordInput = new JPasswordField("");
+        passwordInput.setPreferredSize(new Dimension(400, 30));
+        passwordInput.setFont(new Font("Arial", Font.PLAIN, 19));
+        passwordInput.setBorder(new LineBorder(Color.black,2));
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.gridx = 0;
         constraints.gridy = 8;
-        left.add(field, constraints);
+        left.add(passwordInput, constraints);
 
         JButton changeInfo = new JButton("Change details");
         changeInfo.setPreferredSize(new Dimension(200, 40));
         changeInfo.setFont(new Font("Arial", Font.BOLD, 20));
         changeInfo.setBackground(Color.CYAN);
+        changeInfo.addActionListener(updateAccount());
         left.add(changeInfo, generateConstraints(0, 9, new Insets(50, 0, 10, 0)));
 
         JButton signOut = new JButton("Sign Out");
@@ -231,6 +237,24 @@ public class AccountTab {
                     AccountHandler.getInstance().setSpeech(cur, speechInput.get(cur).getText());
                     AccountHandler.getInstance().saveSpeech();
                 }
+            }
+        };
+    }
+
+    public ActionListener updateAccount() {
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (usernameInput.getText().length() > 2) AccountHandler.getInstance().updateAccountDetail("username", usernameInput.getText());
+                if (firstNameInput.getText().length() > 2) AccountHandler.getInstance().updateAccountDetail("firstName", firstNameInput.getText());
+                if (surnameInput.getText().length() > 2) AccountHandler.getInstance().updateAccountDetail("surName", surnameInput.getText());
+                if (passwordInput.getText().length() > 2) AccountHandler.getInstance().updateAccountDetail("password", AccountHandler.getInstance().encryptText(passwordInput.getText()));
+
+                usernameInput.setText("");
+                firstNameInput.setText("");
+                surnameInput.setText("");
+                passwordInput.setText("");
+
             }
         };
     }

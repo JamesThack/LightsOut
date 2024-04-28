@@ -172,7 +172,7 @@ public class AccountHandler {
         return hexString.toString();
     }
 
-    private String encryptText(String text) {
+    public String encryptText(String text) {
         try {
             return(toHexString(getSHA(text)));
         } catch (NoSuchAlgorithmException e) {
