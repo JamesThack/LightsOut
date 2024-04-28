@@ -100,10 +100,10 @@ public class AccountTab {
         quickAddLabel("New Lap", center, 0, 3);
         quickAddTextInput(center, 0, 4, "newlap");
 
-        quickAddLabel("Pits", center, 0, 5);
+        quickAddLabel("Safety Car In", center, 0, 5);
         quickAddTextInput( center, 0, 6, "pits");
 
-        quickAddLabel("Conditions", center, 0, 7);
+        quickAddLabel("Safety Car Out", center, 0, 7);
         quickAddTextInput(center, 0, 8, "conditions");
 
         quickAddLabel("Flag", center, 0, 9);
@@ -128,7 +128,7 @@ public class AccountTab {
         quickAddLabel("Narrator narrates pits", right, 0, 4);
         quickAddCheckBox(right, 1, 4, "pitnarrate");
 
-        quickAddLabel("Narrator narrates conditions", right, 0, 5);
+        quickAddLabel("Narrator narrates safety car", right, 0, 5);
         quickAddCheckBox(right, 1, 5, "conditionnarrate");
 
         quickAddLabel("Narrator narrates flags", right, 0, 6);

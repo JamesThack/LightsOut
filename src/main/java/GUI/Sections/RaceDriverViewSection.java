@@ -1,5 +1,6 @@
 package GUI.Sections;
 
+import API.AccountHandler;
 import API.Race.LapCalculator;
 import APIObjects.Driver;
 import API.Race.DriverPositions;
@@ -41,6 +42,20 @@ public class RaceDriverViewSection {
 
     private void makeDriverNodes(JPanel panel, int seconds) {
         ArrayList<Driver> driverOrder = driverPositions.getDriversInOrder(seconds);
+        if (!AccountHandler.getInstance().getOption("driverdescend")) {
+            int count = driverOrder.size() - 1;
+            for (JButton cur : driverButtons) {
+                RoundedButton round = (RoundedButton) cur;
+                round.setBorderRadius(round.getBorderRadius());
+                Driver curDriver = driverOrder.get(count);
+                cur.setBackground(curDriver.getTeam().getColour());
+                cur.setForeground(new Color(0,0,0));
+                if (curDriver.getTeam().getName().contains("Red Bull") || curDriver.getTeam().getName().contains("Williams")|| curDriver.getTeam().getName().contains("Aston Martin")) cur.setForeground(new Color(255, 255, 255));
+                cur.setText("<html>P" + (count + 1) + ": " + curDriver.getStarter() + " " + curDriver.getNumber() + " <br>" +  screen.getTyreHandler().getTyreAt(curDriver.getNumber(), screen.getCurrentLap()) + "</html>");
+                count -=1;
+            }
+            return;
+        }
         int count = 0;
         for (JButton cur : driverButtons) {
             if (count >= driverOrder.size()) continue;
@@ -50,7 +65,7 @@ public class RaceDriverViewSection {
             cur.setBackground(curDriver.getTeam().getColour());
             cur.setForeground(new Color(0,0,0));
             //Temporary
-            if (curDriver.getTeam().getName().contains("Red Bull") || curDriver.getTeam().getName().contains("Williams")) cur.setForeground(new Color(255, 255, 255));
+            if (curDriver.getTeam().getName().contains("Red Bull") || curDriver.getTeam().getName().contains("Williams")|| curDriver.getTeam().getName().contains("Aston Martin")) cur.setForeground(new Color(255, 255, 255));
             cur.setText("<html>P" + (count + 1) + ": " + curDriver.getStarter() + " " + curDriver.getNumber() + " <br>" +  screen.getTyreHandler().getTyreAt(curDriver.getNumber(), screen.getCurrentLap()) + "</html>");
             count +=1;
         }

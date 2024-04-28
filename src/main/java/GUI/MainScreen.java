@@ -8,7 +8,9 @@ import javax.swing.*;
 
 import API.AccountHandler;
 import API.Components.Session;
+import API.Race.Flags;
 import API.Race.Race;
+import API.Race.SafetyCar;
 import API.Race.Tyres;
 import API.Speech;
 import APIObjects.RegexAssist;
@@ -30,6 +32,8 @@ public class MainScreen {
 	private RaceSelectorSection raceSelectorSection;
 	private JPanel accountTabPanel;
 	private AccountTab accountTab;
+	private Flags flags;
+	private SafetyCar safetyCar;
 
 	private Session session;
 
@@ -92,7 +96,17 @@ public class MainScreen {
 		controllerContainer.remove(raceControlSection.getPanel());
 		raceControlSection = new RaceControlSection(this);
 		controllerContainer.add(raceControlSection.getPanel(), BorderLayout.SOUTH);
+		flags = new Flags(session.getSessionKey());
+		safetyCar = new SafetyCar(session.getSessionKey());
 		raceInfoSection.addComponents();
+	}
+
+	public SafetyCar getSafetyCar() {
+		return safetyCar;
+	}
+
+	public Flags getFlags() {
+		return flags;
 	}
 
 	public void updateWholeScreen() {

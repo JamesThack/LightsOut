@@ -1,5 +1,6 @@
 package GUI.Sections;
 
+import API.AccountHandler;
 import GUI.MainScreen;
 
 import javax.swing.*;
@@ -51,6 +52,10 @@ public class RaceInfoSection {
             panel.add(raceTime);
             panel.add(conditions);
             panel.add(trackTemp);
+        }
+
+        if (!AccountHandler.getInstance().getOption("racestatus")) {
+            panel.removeAll();
         }
 
     }

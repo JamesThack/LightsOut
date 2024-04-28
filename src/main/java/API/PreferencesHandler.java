@@ -56,8 +56,8 @@ public class PreferencesHandler {
 
         voice.put("newposition", "Is now in position");
         voice.put("newlap", "Now on lap");
-        voice.put("pits", "Is now in the pits");
-        voice.put("conditions", "Conditions have changed to");
+        voice.put("pits", "Safety car is coming in");
+        voice.put("conditions", "Safety car is going out");
         voice.put("flag", "Flag has changed to");
     }
 

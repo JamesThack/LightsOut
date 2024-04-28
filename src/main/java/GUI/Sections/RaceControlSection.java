@@ -15,6 +15,8 @@ import java.awt.event.ActionListener;
 public class RaceControlSection {
 
     private JLabel jSeconds;
+    private JLabel safety;
+    private JLabel flag;
     private JLabel jLaps;
     private JPanel panel;
     private float zoomAmount;
@@ -46,13 +48,47 @@ public class RaceControlSection {
     }
     
     public void updateView() {
-        jSeconds.setText("Race Time: " + RegexAssist.convertToTimeString(seconds) + "  ");
+        jSeconds.setText("Race Time: " + RegexAssist.convertToTimeString(seconds - mainScreen.getSession().getStartTime()) + "  ");
         jSeconds.validate();
         jSeconds.repaint();
 
         if (lapCalculator != null)jLaps.setText("Current Lap: " + lapCalculator.getLapFromTime(seconds) + "   ");
         jLaps.validate();
         jLaps.repaint();
+
+        if (mainScreen.getSafetyCar() != null) {
+            if (mainScreen.getSafetyCar().isSafetyCar(seconds)) {
+                if (safety.getText()!= "Safety Car Status:" && safety.getText().equals("Safety Car Satus: NO SAFETY CAR  ") && AccountHandler.getInstance().getOption("conditionnarrate")) mainScreen.getSpeechHandler().addSpeech(new SpeechRequest(-2, AccountHandler.getInstance().getSpeech("conditions"), -2));
+                safety.setText("Safety Car Satus: SAFETY CAR  ");
+                safety.setForeground(Color.YELLOW);
+            } else {
+                if (safety.getText()!= "" && safety.getText() != "Safety Car Status:" && !safety.getText().equals("Safety Car Satus: NO SAFETY CAR  ") && AccountHandler.getInstance().getOption("conditionnarrate")) mainScreen.getSpeechHandler().addSpeech(new SpeechRequest(-2, AccountHandler.getInstance().getSpeech("pits"), -2));
+                safety.setText("Safety Car Satus: NO SAFETY CAR  ");
+                safety.setForeground(Color.WHITE);
+            }
+
+        }
+
+        if (!AccountHandler.getInstance().getOption("safetycarstatus")) {
+            safety.setText("");
+        }
+
+        if (mainScreen.getFlags() != null) {
+            if (mainScreen.getFlags().isRedFlag(seconds)) {
+                if (flag.getText()!= "Red Flag Status:" && flag.getText().equals("Red Flag Status: GREEN FLAG  ") && AccountHandler.getInstance().getOption("flagnarrate")) mainScreen.getSpeechHandler().addSpeech(new SpeechRequest(-3, AccountHandler.getInstance().getSpeech("flag") + " red flag ", -3));
+                flag.setText("Red Flag Status: RED FLAG  ");
+                flag.setForeground(Color.BLUE);
+            } else {
+                if (flag.getText()!= "" && flag.getText()!= "Red Flag Status:" && !flag.getText().equals("Red Flag Status: GREEN FLAG  ") && AccountHandler.getInstance().getOption("flagnarrate")) mainScreen.getSpeechHandler().addSpeech(new SpeechRequest(-3, AccountHandler.getInstance().getSpeech("flag") + " green flag ", -3));
+                flag.setText("Red Flag Status: GREEN FLAG  ");
+                flag.setForeground(Color.GREEN);
+            }
+
+        }
+
+        if (!AccountHandler.getInstance().getOption("flagstatus")) {
+            flag.setText("");
+        }
     }
     
     public JPanel getPanel() {
@@ -92,6 +128,16 @@ public class RaceControlSection {
         jSeconds.setForeground(new Color(255, 255, 255));
         jSeconds.setFont(new Font("Arial", Font.BOLD, 20));
         panel.add(jSeconds);
+
+        safety = new JLabel("Safety Car Status:");
+        safety.setForeground(new Color(255, 255, 255));
+        safety.setFont(new Font("Arial", Font.BOLD, 20));
+        panel.add(safety);
+
+        flag = new JLabel("Red Flag Status:");
+        flag.setForeground(new Color(255, 255, 255));
+        flag.setFont(new Font("Arial", Font.BOLD, 20));
+        panel.add(flag);
 
         jLaps = new JLabel("Current Lap: ");
         jLaps.setForeground(new Color(255, 255, 255));
