@@ -1,5 +1,6 @@
 package API.Race;
 
+import API.AccountHandler;
 import API.Components.Request;
 import API.Components.Session;
 import API.Components.SpeechRequest;
@@ -100,8 +101,8 @@ public class DriverPositions {
             int newDriver = driverPos.get(cur);
             if (newDriver != pastDriverPositions.get(cur)) {
                 Driver driver = DriverAPI.getInstance().getDriver(newDriver);
-                SpeechRequest request = new SpeechRequest(newDriver, driver.getName() + " is now in position " + cur, cur);
-                MainScreen.getInstance().getSpeechHandler().addSpeech(request);
+                SpeechRequest request = new SpeechRequest(newDriver, driver.getName() + " " +  AccountHandler.getInstance().getSpeech("newposition") + " " +  + cur, cur);
+                if (AccountHandler.getInstance().getOption("overtakenarrate")) MainScreen.getInstance().getSpeechHandler().addSpeech(request);
             }
         }
         pastDriverPositions = driverPos;

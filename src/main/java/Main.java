@@ -2,6 +2,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Timer;
 
+import API.AccountHandler;
 import API.AsyncTimer;
 import API.Components.Session;
 import API.Race.RaceSelector;
@@ -14,6 +15,9 @@ import com.sun.speech.freetts.VoiceManager;
 public class Main {
 
     public static void main(String[] args) {
+
+
+        AccountHandler.getInstance();
 
         MainScreen window = MainScreen.getInstance();
         AsyncTimer asyncHandler = new AsyncTimer(window);

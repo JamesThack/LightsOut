@@ -30,7 +30,7 @@ public class Speech {
     }
 
     public void addSpeech(SpeechRequest speech) {
-        cachedSpeech.put(speech.getDriver(), speech);
+        if (AccountHandler.getInstance().getOption("narrator")) cachedSpeech.put(speech.getDriver(), speech);
 
     }
 
@@ -47,7 +47,7 @@ public class Speech {
             public void run() {
                 if (getHighestPriorityItem() >= speech.getPriority()) {
                     isSpeaking = true;
-                    narrator.speak(speech.getMessage());
+                     narrator.speak(speech.getMessage());
                     cachedSpeech.remove(speech.getDriver());
                     isSpeaking = false;
                 }

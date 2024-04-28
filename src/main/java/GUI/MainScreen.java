@@ -6,11 +6,14 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import API.AccountHandler;
 import API.Components.Session;
 import API.Race.Race;
 import API.Race.Tyres;
 import API.Speech;
 import APIObjects.RegexAssist;
+import GUI.Pages.AccountTab;
+import GUI.Pages.SignIn;
 import GUI.Sections.*;
 
 public class MainScreen {
@@ -23,7 +26,10 @@ public class MainScreen {
 	private RaceDriverViewSection driverViewTab;
 	private RaceControlSection raceControlSection;
 	private final RaceInfoSection raceInfoSection;
+	private SignIn signIn;
 	private RaceSelectorSection raceSelectorSection;
+	private JPanel accountTabPanel;
+	private AccountTab accountTab;
 
 	private Session session;
 
@@ -43,9 +49,13 @@ public class MainScreen {
 	public MainScreen(int initialSeconds) {
 		frame = new JFrame();
 
+		accountTabPanel = new JPanel();
+
 		raceControlSection = new RaceControlSection(this);
 		raceSelectorSection = new RaceSelectorSection();
 		raceInfoSection = new RaceInfoSection(this);
+		accountTab = new AccountTab(this, accountTabPanel);
+		signIn = new SignIn(accountTabPanel);
 
 		speechHandler = new Speech();
 
@@ -94,14 +104,18 @@ public class MainScreen {
 	}
 
 	private void initialize() {
+
 		frame.setBounds(0, 0, 1920, 1080);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		frame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
+
+		signIn.refreshPanel();
 		
 		controllerContainer = new JPanel();
-		tabbedPane.addTab("New tab", null, controllerContainer, null);
+		tabbedPane.addTab("Race Overview", null, controllerContainer, null);
+		tabbedPane.addTab("Account And Preferences", null, accountTabPanel, null);
 		controllerContainer.setLayout(new BorderLayout(0, 0));
 		
 		driverContainer = new JPanel();
@@ -114,6 +128,14 @@ public class MainScreen {
 		driverContainer.add(raceSelectorSection.getPanel(), BorderLayout.CENTER);
 		controllerContainer.add(raceInfoSection.getPanel(), BorderLayout.WEST);
 
+	}
+
+	public void checkLoggedIn() {
+		if (AccountHandler.getInstance().isLoggedIn()) {
+			accountTab.refreshPage();
+		} else {
+			signIn.refreshPanel();
+		}
 	}
 
 	public Speech getSpeechHandler() {

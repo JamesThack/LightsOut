@@ -46,7 +46,6 @@ public class RaceDriverViewSection {
             if (count >= driverOrder.size()) continue;
             RoundedButton round = (RoundedButton) cur;
             round.setBorderRadius(round.getBorderRadius());
-            System.out.println(count);
             Driver curDriver = driverOrder.get(count);
             cur.setBackground(curDriver.getTeam().getColour());
             cur.setForeground(new Color(0,0,0));

@@ -1,5 +1,6 @@
 package APIObjects;
 
+import java.awt.*;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -23,6 +24,21 @@ public class RegexAssist {
         ZonedDateTime zonedDateTime = instant.atZone(ZoneId.of("UTC"));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         return(zonedDateTime.format(formatter));
+    }
+
+    public static GridBagConstraints generateConstraints(int x, int y) {
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.gridx = x;
+        constraints.gridy = y;
+        return constraints;
+    }
+
+    public static  GridBagConstraints generateConstraints(int x, int y, Insets insets) {
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.gridx = x;
+        constraints.gridy = y;
+        constraints.insets = insets;
+        return constraints;
     }
 
 }

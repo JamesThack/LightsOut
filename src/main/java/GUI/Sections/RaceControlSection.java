@@ -1,5 +1,6 @@
 package GUI.Sections;
 
+import API.AccountHandler;
 import API.Components.SpeechRequest;
 import API.Race.LapCalculator;
 import APIObjects.RegexAssist;
@@ -64,7 +65,7 @@ public class RaceControlSection {
 
     public void setSeconds(int seconds) {
 
-        if (lapCalculator != null && lapCalculator.getLapFromTime(this.seconds) != lapCalculator.getLapFromTime(seconds)) mainScreen.getSpeechHandler().addSpeech(new SpeechRequest(-1, "Now on lap " + lapCalculator.getLapFromTime(seconds), -1));
+        if (lapCalculator != null && lapCalculator.getLapFromTime(this.seconds) != lapCalculator.getLapFromTime(seconds) && AccountHandler.getInstance().getOption("newlapnarrate")) mainScreen.getSpeechHandler().addSpeech(new SpeechRequest(-1, AccountHandler.getInstance().getSpeech("newlap") + " " + lapCalculator.getLapFromTime(seconds), -1));
         this.seconds = seconds;
     }
 
