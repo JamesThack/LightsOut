@@ -2,3 +2,10 @@
 /target
 /target
 .idea/vcs.xml
+/.metadata
+/target
+/.idea
+/.idea
+.classpath
+.project
+.settings/org.eclipse.jdt.core.prefs
