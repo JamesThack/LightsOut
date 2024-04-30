@@ -1,6 +1,7 @@
 package GUI.Pages;
 
 import API.AccountHandler;
+import APIObjects.RegexAssist;
 import GUI.Components.RoundedButton;
 import GUI.MainScreen;
 
@@ -146,6 +147,10 @@ public class AccountTab {
         quickAddLabel("Show safety car status", right, 0, 10);
         quickAddCheckBox(right, 1, 10, "safetycarstatus");
 
+        JButton driverConfig = new JButton("Update Driver Configuration");
+        driverConfig.addActionListener(openDriverNarratorMenu());
+        right.add(driverConfig, RegexAssist.generateConstraints(0, 11));
+
     }
 
     private JLabel quickAddLabel(String text, JPanel panel, int x, int y) {
@@ -237,6 +242,15 @@ public class AccountTab {
                     AccountHandler.getInstance().setSpeech(cur, speechInput.get(cur).getText());
                     AccountHandler.getInstance().saveSpeech();
                 }
+            }
+        };
+    }
+
+    public ActionListener openDriverNarratorMenu() {
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DriverNarratorSelectScreen driverMenu = new DriverNarratorSelectScreen();
             }
         };
     }

@@ -79,6 +79,10 @@ public class AccountHandler {
                     isLoggedIn = true;
                     preferences.loadPreferences(accountId);
                     preferences.loadSpeech(accountId);
+                    preferences.loadDriverNarrate(accountId);
+
+                    System.out.println("Lewis Hamilton: " + preferences.getDriverNarrate(44));
+                    System.out.println("Lando Norris: " + preferences.getDriverNarrate(4));
 
                     return true;
                 } else {
@@ -110,6 +114,15 @@ public class AccountHandler {
         preferences.setSpeech(speech, value);
     }
 
+    public boolean getDriverNarrate(int driverNumber) {
+        return preferences.getDriverNarrate(driverNumber);
+    }
+
+    public void setDriverNarrate(int driverNumber, boolean value) {
+        preferences.setDriverNarrateOptions(driverNumber, value);
+        preferences.saveDriverNarrate(accountId);
+    }
+
     public void saveSpeech() {
         preferences.saveSpeech(accountId);
     }
@@ -123,7 +136,7 @@ public class AccountHandler {
             System.out.println("Error: " + e.getMessage());
         }
     }
-
+    
     public void updateAccountDetail(String column, String value) {
         String sql = "Update Users SET " + column + " = '" + value + "' WHERE userId=" + accountId + ";";
         try {

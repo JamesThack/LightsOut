@@ -103,7 +103,7 @@ public class DriverPositions {
                 if (newDriver != pastDriverPositions.get(cur)) {
                     Driver driver = DriverAPI.getInstance().getDriver(newDriver);
                     SpeechRequest request = new SpeechRequest(newDriver, driver.getName() + " " + AccountHandler.getInstance().getSpeech("newposition") + " " + +cur, cur);
-                    if (AccountHandler.getInstance().getOption("overtakenarrate"))
+                    if (AccountHandler.getInstance().getOption("overtakenarrate") && AccountHandler.getInstance().getDriverNarrate(driver.getNumber()))
                         MainScreen.getInstance().getSpeechHandler().addSpeech(request);
                 }
             }

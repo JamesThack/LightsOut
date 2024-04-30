@@ -11,6 +11,7 @@ public class PreferencesHandler {
 
     private HashMap<String, Boolean> options;
     private HashMap<String, String> voice;
+    private HashMap<Integer, Boolean> driverNarrateOptions;
 
     private Connection connection;
 
@@ -18,6 +19,7 @@ public class PreferencesHandler {
     public PreferencesHandler(Connection connection) {
         options = new HashMap<>();
         voice = new HashMap<>();
+        driverNarrateOptions = new HashMap<>();
 
         this.connection = connection;
 
@@ -36,6 +38,15 @@ public class PreferencesHandler {
 
     public void setOption(String option, boolean value) {
         options.put(option, value);
+    }
+
+    public boolean getDriverNarrate(int driver) {
+        if (driverNarrateOptions.get(driver) == null) return true;
+        return driverNarrateOptions.get(driver);
+    }
+
+    public void setDriverNarrateOptions(int driver, boolean value) {
+        driverNarrateOptions.put(driver, value);
     }
 
     public void setSpeech(String speech, String text) {
@@ -74,6 +85,26 @@ public class PreferencesHandler {
                 String preferenceName = rs.getString("preferenceName");
                 boolean preferenceValue = (rs.getInt("preferenceValue") == 1);
                 options.put(preferenceName, preferenceValue);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+    }
+
+    public void loadDriverNarrate(int accountId) {
+
+        String sql = "SELECT * FROM DriverNarrate WHERE userId=" + accountId + ";";
+        try {
+            Statement stmt  = connection.createStatement();
+            ResultSet rs    = stmt.executeQuery(sql);
+
+            // loop through the result set
+            while (rs.next()) {
+
+                int driverNumber = rs.getInt("driverNumber");
+                boolean preferenceValue = (rs.getInt("value") == 1);
+                driverNarrateOptions.put(driverNumber, preferenceValue);
             }
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
@@ -135,8 +166,42 @@ public class PreferencesHandler {
         }
     }
 
+    public void saveDriverNarrate(int accountId) {
+        for (int cur : driverNarrateOptions.keySet()) {
+            int saveValue = 1;
+            if (!driverNarrateOptions.get(cur)) saveValue = 0;
+            String sql = "Update DriverNarrate SET value = " + saveValue + " WHERE userId=" + accountId + " AND driverNumber=" + cur + ";";
+            if (!checkIfDriverNarrateExists(accountId, cur)) sql = "INSERT INTO DriverNarrate(userId, driverNumber, value) VALUES(" + accountId + "," +cur + "," + driverNarrateOptions.get(cur) + ");";
+            try {
+                Statement stmt  = connection.createStatement();
+                stmt.execute(sql);
+            } catch (SQLException e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+
+
+        }
+    }
+
     public boolean checkIfPreferenceExists(int accountId, String preference) {
         String sql = "SELECT * FROM Preferences WHERE userId=" + accountId + " AND preferenceName='" + preference + "';";
+        try {
+            Statement stmt  = connection.createStatement();
+            ResultSet rs    = stmt.executeQuery(sql);
+
+            // loop through the result set
+            while (rs.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        return false;
+    }
+
+    public boolean checkIfDriverNarrateExists(int accountId, int driverNumber) {
+        String sql = "SELECT * FROM DriverNarrate WHERE userId=" + accountId + " AND driverNumber=" + driverNumber + ";";
         try {
             Statement stmt  = connection.createStatement();
             ResultSet rs    = stmt.executeQuery(sql);
