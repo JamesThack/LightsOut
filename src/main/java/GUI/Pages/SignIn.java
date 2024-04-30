@@ -131,7 +131,7 @@ public class SignIn {
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (AccountHandler.getInstance().login(loginUsername.getText(), loginPassword.getText())) {
+                if (AccountHandler.getInstance().login(loginUsername.getText().toLowerCase(), loginPassword.getText())) {
                     System.out.println("Logged in!");
                     MainScreen.getInstance().checkLoggedIn();
                 } else {
@@ -146,14 +146,28 @@ public class SignIn {
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (registerUsername.getText().length() < 2 || registerPassword.getText().length() < 2 || registerFirstName.getText().length() < 2 || registerSurname.getText().length() < 2) {
-                    JOptionPane.showMessageDialog(panel, "Please input valid information",
+                if (registerUsername.getText().length() < 2 || registerFirstName.getText().length() < 2 || registerSurname.getText().length() < 2) {
+                    JOptionPane.showMessageDialog(panel, "Please ensure no fields are empty",
                             "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
-                AccountHandler.getInstance().register(registerUsername.getText(), registerPassword.getText(), registerFirstName.getText(), registerSurname.getText());
-                AccountHandler.getInstance().login(registerUsername.getText(), registerPassword.getText());
+                if (AccountHandler.getInstance().checkIfAccountExists(registerUsername.getText())) {
+                    JOptionPane.showMessageDialog(panel, "Username Exists!",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                if (AccountHandler.getInstance().validatePassword(registerPassword.getText()) != "") {
+                    JOptionPane.showMessageDialog(panel, "Password " + AccountHandler.getInstance().validatePassword(registerPassword.getText()),
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+
+
+                AccountHandler.getInstance().register(registerUsername.getText().toLowerCase(), registerPassword.getText(), registerFirstName.getText(), registerSurname.getText());
+                AccountHandler.getInstance().login(registerUsername.getText().toLowerCase(), registerPassword.getText());
                 MainScreen.getInstance().checkLoggedIn();
             }
         };

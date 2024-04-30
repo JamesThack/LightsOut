@@ -8,6 +8,8 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class AccountHandler {
 
@@ -127,16 +129,18 @@ public class AccountHandler {
         preferences.saveSpeech(accountId);
     }
 
-    public void register(String username, String password, String firstName, String surname) {
+    public boolean register(String username, String password, String firstName, String surname) {
         String sql = "INSERT INTO users(username, password, firstName, surName) VALUES('" + username.toLowerCase() + "','" + encryptText(password) + "','" + firstName + "','" + surname + "');";
         try {
             Statement stmt  = connection.createStatement();
             stmt.execute(sql);
+            return true;
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
+            return false;
         }
     }
-    
+
     public void updateAccountDetail(String column, String value) {
         String sql = "Update Users SET " + column + " = '" + value + "' WHERE userId=" + accountId + ";";
         try {
@@ -145,6 +149,44 @@ public class AccountHandler {
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
+    }
+
+    public String validatePassword(String password) {
+        boolean isEightChars = password.length() >= 8;
+
+
+        Pattern letter = Pattern.compile("[a-zA-z]");
+        Pattern digit = Pattern.compile("[0-9]");
+        Pattern special = Pattern.compile ("[!@#$%&*()_+=|<>?{}\\[\\]~-]");
+        //Pattern eight = Pattern.compile (".{8}");
+
+
+        Matcher hasLetter = letter.matcher(password);
+        Matcher hasDigit = digit.matcher(password);
+        Matcher hasSpecial = special.matcher(password);
+
+        if (!isEightChars) return "needs to have at least 8 characters";
+        if (!(hasLetter.find() && hasDigit.find())) return "needs to contain a mix of letters and numbers";
+        if (!hasSpecial.find()) return "needs to contain a special character";
+        return "";
+
+    }
+
+    public boolean checkIfAccountExists(String username) {
+        String sql = "SELECT * FROM Users WHERE username='" + username.toLowerCase() + "';";
+        try {
+            Statement stmt  = connection.createStatement();
+            ResultSet rs    = stmt.executeQuery(sql);
+
+            // loop through the result set
+            while (rs.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        return false;
     }
 
     private void connect() {
