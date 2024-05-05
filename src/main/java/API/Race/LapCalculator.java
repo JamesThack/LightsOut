@@ -8,11 +8,21 @@ import java.util.TreeMap;
 public class LapCalculator {
 
 
-    private final TreeMap<Integer, Integer> laps;
+    private TreeMap<Integer, Integer> laps;
     private static LapCalculator instance;
     private Request request;
+    private String sessionKey;
+    private int startTime;
 
     public LapCalculator(int startTime, String sessionKey) {
+
+        this.sessionKey = sessionKey;
+        this.startTime = startTime;
+        refreshData();
+
+    }
+
+    public void refreshData() {
 
         laps = new TreeMap<>();
         request = new Request("https://api.openf1.org/v1/laps", sessionKey);
@@ -31,7 +41,7 @@ public class LapCalculator {
                 switch (key) {
                     case "\"date_start\"":
                         if (value.equals("null")) continue;
-                        String timeRaw = pair.split("T")[1].replace("\"", "");
+                        String timeRaw = pair.split("T")[1].replace("\"", "").split("\\+")[0];;
                         time = RegexAssist.convertToUnix(timeRaw);
                         break;
                     case "\"lap_number\"":

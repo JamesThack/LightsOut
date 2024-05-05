@@ -22,7 +22,9 @@ public class DriverNarratorSelectScreen {
         window.setVisible(true);
 
         window.setTitle("Choose driver narration options");
-        window.setSize(new Dimension(1200, 800));
+        window.setSize(new Dimension(1200, 400));
+
+        panel.setBackground(new Color(21, 21, 31));
 
         window.getContentPane().add(panel);
 
@@ -39,6 +41,9 @@ public class DriverNarratorSelectScreen {
 
     private JCheckBox quickAddCheckBox(JPanel panel, Driver driver) {
         JCheckBox checkBox = new JCheckBox(driver.getName(), AccountHandler.getInstance().getDriverNarrate(driver.getNumber()));
+        checkBox.setOpaque(false);
+        checkBox.setForeground(Color.RED);
+        checkBox.setFont(new Font("Arial", Font.BOLD, 15));
         checkBox.addActionListener(changePreference(driver.getNumber(), checkBox));
         panel.add(checkBox);
 

@@ -19,6 +19,8 @@ public class RaceSelectorSection {
     public RaceSelectorSection() {
         panel = new JPanel();
 
+        panel.setBackground(new Color(21, 21, 31));
+
         selector = new RaceSelector();
 
         initialise();
@@ -39,6 +41,7 @@ public class RaceSelectorSection {
 
     private void addInRaces() {
         JButton noLive = new JButton("NO LIVE RACE DETECTED");
+        noLive.addActionListener(setLiveRace());
         noLive.setPreferredSize(new Dimension(300, 100));
         noLive.setBackground(Color.RED);
         noLive.setForeground(Color.WHITE);
@@ -60,6 +63,19 @@ public class RaceSelectorSection {
             public void actionPerformed(ActionEvent e) {
                 DriverAPI.getInstance().regenerateDriverList(session.getSessionKey());
                 MainScreen.getInstance().setSession(session);
+                MainScreen.getInstance().setLive(false);
+            }
+        };
+    }
+
+    public ActionListener setLiveRace() {
+
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DriverAPI.getInstance().regenerateDriverList("latest");
+                MainScreen.getInstance().setSession(RaceSelector.getLiveSession());
+                MainScreen.getInstance().setLive(true);
             }
         };
     }

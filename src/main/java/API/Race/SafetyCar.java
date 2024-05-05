@@ -8,12 +8,18 @@ import java.util.TreeMap;
 
 public class SafetyCar {
 
-    private final TreeMap<Integer, String> safety;
-    private final Request request;
+    private  TreeMap<Integer, String> safety;
+    private  Request request;
     private TreeMap<Integer, Integer> pastDriverPositions;
+    private String sessionKey;
 
     public SafetyCar(String sessionKey) {
+        this.sessionKey = sessionKey;
 
+        refreshData();
+    }
+
+    public void refreshData() {
         safety = new TreeMap<>();
         request = new Request("https://api.openf1.org/v1/race_control?category=SafetyCar&session_key=" + sessionKey);
 
@@ -29,7 +35,7 @@ public class SafetyCar {
                 switch (key) {
                     case "\"date\"":
                         if (value.equals("null")) continue;
-                        String timeRaw = pair.split("T")[1].replace("\"", "");
+                        String timeRaw = pair.split("T")[1].replace("\"", "").split("\\+")[0];;
                         time = RegexAssist.convertToUnix(timeRaw);
                         break;
                     case "\"message\"":

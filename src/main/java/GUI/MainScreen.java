@@ -14,6 +14,7 @@ import API.Race.SafetyCar;
 import API.Race.Tyres;
 import API.Speech;
 import APIObjects.RegexAssist;
+import GUI.Components.BackgroundFrame;
 import GUI.Pages.AccountTab;
 import GUI.Pages.SignIn;
 import GUI.Sections.*;
@@ -23,17 +24,19 @@ public class MainScreen {
 	private final JFrame frame;
 	private JPanel driverContainer;
 
-	private JPanel controllerContainer;
+	private BackgroundFrame controllerContainer;
 
 	private RaceDriverViewSection driverViewTab;
 	private RaceControlSection raceControlSection;
 	private final RaceInfoSection raceInfoSection;
 	private SignIn signIn;
 	private RaceSelectorSection raceSelectorSection;
-	private JPanel accountTabPanel;
+	private BackgroundFrame accountTabPanel;
 	private AccountTab accountTab;
 	private Flags flags;
 	private SafetyCar safetyCar;
+
+	private boolean isLive;
 
 	private Session session;
 
@@ -53,7 +56,7 @@ public class MainScreen {
 	public MainScreen(int initialSeconds) {
 		frame = new JFrame();
 
-		accountTabPanel = new JPanel();
+		accountTabPanel = new BackgroundFrame("Art/SignIn.png");
 
 		raceControlSection = new RaceControlSection(this);
 		raceSelectorSection = new RaceSelectorSection();
@@ -62,6 +65,8 @@ public class MainScreen {
 		signIn = new SignIn(accountTabPanel);
 
 		speechHandler = new Speech();
+
+		isLive = false;
 
 		initialize();
 		frame.setVisible(true);
@@ -80,6 +85,14 @@ public class MainScreen {
 
 		updateWholeScreen();
 
+	}
+
+	public boolean isLive() {
+		return isLive;
+	}
+
+	public void setLive(boolean live) {
+		isLive = live;
 	}
 
 	public float getZoomAmount() {
@@ -101,6 +114,23 @@ public class MainScreen {
 		raceInfoSection.addComponents();
 	}
 
+	public void updatePositions() {
+
+		System.out.println("Updating positions");
+
+		driverViewTab.getDriverPositions().refreshData();
+		raceControlSection.getLapCalculator().refreshData();
+	}
+
+	public void updateSafety() {
+
+		System.out.println("Updating safety");
+
+		tyreHandler.refreshData();
+		safetyCar.refreshData();
+		flags.refreshData();
+	}
+
 	public SafetyCar getSafetyCar() {
 		return safetyCar;
 	}
@@ -110,6 +140,8 @@ public class MainScreen {
 	}
 
 	public void updateWholeScreen() {
+
+
 
 		if (driverViewTab != null) {
 			driverViewTab.updateDriverView(getSeconds());
@@ -127,7 +159,7 @@ public class MainScreen {
 
 		signIn.refreshPanel();
 		
-		controllerContainer = new JPanel();
+		controllerContainer = new BackgroundFrame("/home/james/Documents/LightsOutBackground.png");
 		tabbedPane.addTab("Race Overview", null, controllerContainer, null);
 		tabbedPane.addTab("Account And Preferences", null, accountTabPanel, null);
 		controllerContainer.setLayout(new BorderLayout(0, 0));

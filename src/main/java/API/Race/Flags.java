@@ -10,12 +10,20 @@ import java.util.TreeMap;
 public class Flags {
 
 
-    private final TreeMap<Integer, String> flags;
-    private final Request request;
+    private TreeMap<Integer, String> flags;
+    private Request request;
     private TreeMap<Integer, Integer> pastDriverPositions;
+    private  String sessionKey;
 
     public Flags(String sessionKey) {
+        refreshData();
 
+        this.sessionKey = sessionKey;
+
+
+    }
+
+    public void refreshData() {
         flags = new TreeMap<>();
         request = new Request("https://api.openf1.org/v1/race_control?category=Flag&scope=Track&session_key=" + sessionKey);
 
@@ -31,7 +39,7 @@ public class Flags {
                 switch (key) {
                     case "\"date\"":
                         if (value.equals("null")) continue;
-                        String timeRaw = pair.split("T")[1].replace("\"", "");
+                        String timeRaw = pair.split("T")[1].replace("\"", "").split("\\+")[0];;
                         time = RegexAssist.convertToUnix(timeRaw);
                         break;
                     case "\"flag\"":
@@ -45,7 +53,6 @@ public class Flags {
         for (int time : flags.keySet()) {
             System.out.println(RegexAssist.convertToTimeString(time) + " " + flags.get(time));
         }
-
 
     }
 

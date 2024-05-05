@@ -1,6 +1,7 @@
 package GUI.Pages;
 
 import API.AccountHandler;
+import GUI.Components.BackgroundFrame;
 import GUI.MainScreen;
 
 import javax.swing.*;
@@ -13,7 +14,7 @@ import static APIObjects.RegexAssist.generateConstraints;
 
 public class SignIn {
 
-    private JPanel panel;
+    private BackgroundFrame panel;
 
     private JTextArea loginUsername;
     private JPasswordField loginPassword;
@@ -24,7 +25,7 @@ public class SignIn {
     private JPasswordField registerPassword;
 
 
-    public SignIn(JPanel panel) {
+    public SignIn(BackgroundFrame panel) {
         this.panel = panel;
     }
 
@@ -34,6 +35,7 @@ public class SignIn {
 
     public void refreshPanel() {
         panel.removeAll();
+        panel.updateImage("/home/james/Documents/Uni Work/LightsOut/LightsOut/Art/SignIn.png");
         initialise();
     }
 
@@ -42,6 +44,9 @@ public class SignIn {
 
         JPanel left = new JPanel(new GridBagLayout());
         JPanel right = new JPanel(new GridBagLayout());
+
+        left.setOpaque(false);
+        right.setOpaque(false);
 
         panel.add(left, BorderLayout.WEST);
         panel.add(right, BorderLayout.EAST);
@@ -80,24 +85,32 @@ public class SignIn {
 
         JLabel loginUsernameLabel = new JLabel("Username");
         loginUsernameLabel.setFont(new Font("Arial", Font.BOLD, 23));
+        loginUsernameLabel.setForeground(Color.RED);
         JLabel loginPasswordLabel = new JLabel("Password");
+        loginPasswordLabel.setForeground(Color.RED);
         loginPasswordLabel.setFont(new Font("Arial", Font.BOLD, 23));
         JLabel registerUsernameLabel = new JLabel("Username");
+        registerUsernameLabel.setForeground(Color.RED);
         registerUsernameLabel.setFont(new Font("Arial", Font.BOLD, 23));
         JLabel registerPasswordLabel = new JLabel("Password");
+        registerPasswordLabel.setForeground(Color.RED);
         registerPasswordLabel.setFont(new Font("Arial", Font.BOLD, 23));
         JLabel firstName = new JLabel("First Name");
+        firstName.setForeground(Color.RED);
         firstName.setFont(new Font("Arial", Font.BOLD, 23));
         JLabel surname = new JLabel("Surname");
+        surname.setForeground(Color.RED);
         surname.setFont(new Font("Arial", Font.BOLD, 23));
 
         JButton loginButton = new JButton("Sign In");
-        loginButton.setBackground(Color.cyan);
+        loginButton.setBackground(Color.RED);
+        loginButton.setForeground(Color.white);
         loginButton.setPreferredSize(new Dimension(200, 40));
         loginButton.setFont(new Font("Arial", Font.BOLD, 20));
 
         JButton registerButton = new JButton("Register");
-        registerButton.setBackground(Color.green);
+        registerButton.setBackground(Color.RED);
+        registerButton.setForeground(Color.WHITE);
         registerButton.setPreferredSize(new Dimension(200, 40));
         registerButton.setFont(new Font("Arial", Font.BOLD, 20));
 

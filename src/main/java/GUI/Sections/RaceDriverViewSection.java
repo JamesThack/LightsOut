@@ -31,6 +31,8 @@ public class RaceDriverViewSection {
 
         driverPositions = new DriverPositions(screen.getSession());
 
+        driverView.setBackground(new Color(21, 21, 31));
+
         for (Driver cur : driverPositions.getDriversInOrder(0)) {
             JButton newBut = new RoundedButton("", 175);
             newBut.setFont(new Font("Arial", Font.BOLD, 16));
@@ -79,6 +81,10 @@ public class RaceDriverViewSection {
         driverView.repaint();
         makeDriverNodes(driverView, seconds);
         driverView.validate();
+    }
+
+    public DriverPositions getDriverPositions() {
+        return driverPositions;
     }
 
     public void clearCache() {

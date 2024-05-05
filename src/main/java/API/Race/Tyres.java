@@ -10,13 +10,19 @@ import java.util.TreeMap;
 public class Tyres {
 
 
-    private final HashMap<Integer, TreeMap<Integer, String>> tyres;
-    private final Request request;
+    private HashMap<Integer, TreeMap<Integer, String>> tyres;
+    private  Request request;
     private TreeMap<Integer, Integer> pastDriverPositions;
+    private Session session;
 
 
     public Tyres(Session session) {
 
+        this.session = session;
+        refreshData();
+    }
+
+    public void refreshData() {
         tyres = new HashMap<>();
 
         request = new Request("https://api.openf1.org/v1/stints", session.getSessionKey());

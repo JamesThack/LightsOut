@@ -157,6 +157,10 @@ public class RaceControlSection {
                         clearCacheListener()});
     }
 
+    public LapCalculator getLapCalculator() {
+        return lapCalculator;
+    }
+
     private void loadNewButtons(String[] names, ActionListener[] listeners) {
         for (int i = 0; i< names.length; i++) {
             JButton newBut = new RoundedButton(names[i], 60);

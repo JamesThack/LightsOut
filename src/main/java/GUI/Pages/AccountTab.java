@@ -2,6 +2,7 @@ package GUI.Pages;
 
 import API.AccountHandler;
 import APIObjects.RegexAssist;
+import GUI.Components.BackgroundFrame;
 import GUI.Components.RoundedButton;
 import GUI.MainScreen;
 
@@ -16,7 +17,7 @@ import static APIObjects.RegexAssist.generateConstraints;
 
 public class AccountTab {
 
-    private JPanel panel;
+    private BackgroundFrame panel;
     private JPanel left;
     private JPanel right;
     private JPanel center;
@@ -28,7 +29,7 @@ public class AccountTab {
 
     HashMap<String, JTextArea> speechInput;
 
-    public AccountTab(MainScreen mainScreen, JPanel panel) {
+    public AccountTab(MainScreen mainScreen, BackgroundFrame panel) {
         this.panel = panel;
     }
 
@@ -38,6 +39,7 @@ public class AccountTab {
 
     public void refreshPage() {
         panel.removeAll();
+        panel.updateImage("/home/james/Documents/Uni Work/LightsOut/LightsOut/Art/Account.png");
         initialisePage();
     }
 
@@ -51,13 +53,17 @@ public class AccountTab {
         left = new JPanel(new GridBagLayout());
         center = new JPanel(new GridBagLayout());
 
+        right.setOpaque(false);
+        center.setOpaque(false);
+        left.setOpaque(false);
+
         panel.add(left, BorderLayout.WEST);
         panel.add(right, BorderLayout.EAST);
         panel.add(center, BorderLayout.CENTER);
 
         quickAddLabel("Account Information", left, 0, 0, new Insets(0, 100, 300, 100));
-        quickAddLabel("System Messages", center, 0, 0, new Insets(0, 100, 370, 100));
-        quickAddLabel("Options", right, 0, 0, new Insets(0, 100, 250, 100));
+        quickAddLabel("System Messages", center, 0, 0, new Insets(0, 100, 275, 100));
+        quickAddLabel("Options", right, 0, 0, new Insets(0, 100, 190, 100));
 
         quickAddLabel("Username", left,0, 1);
         usernameInput = quickAddTextInput("", left, 0, 2);
@@ -79,13 +85,14 @@ public class AccountTab {
         JButton changeInfo = new JButton("Change details");
         changeInfo.setPreferredSize(new Dimension(200, 40));
         changeInfo.setFont(new Font("Arial", Font.BOLD, 20));
-        changeInfo.setBackground(Color.CYAN);
+        changeInfo.setBackground(Color.RED);
+        changeInfo.setForeground(Color.WHITE);
         changeInfo.addActionListener(updateAccount());
         left.add(changeInfo, generateConstraints(0, 9, new Insets(50, 0, 10, 0)));
 
         JButton signOut = new JButton("Sign Out");
-        signOut.setForeground(new Color(255, 255, 255));
-        signOut.setBackground(new Color(255, 0, 0));
+        signOut.setForeground(Color.WHITE);
+        signOut.setBackground(Color.RED);
         signOut.addActionListener(logOut());
         signOut.setPreferredSize(new Dimension(200, 40));
         signOut.setFont(new Font("Arial", Font.BOLD, 20));
@@ -111,7 +118,8 @@ public class AccountTab {
         quickAddTextInput( center, 0, 10, "flag");
 
         JButton updateSpeech = new JButton("Update TTS Configuration");
-        updateSpeech.setBackground(Color.CYAN);
+        updateSpeech.setBackground(Color.RED);
+        updateSpeech.setForeground(Color.WHITE);
         updateSpeech.addActionListener(changeSpeech());
         updateSpeech.setPreferredSize(new Dimension(300, 40));
         updateSpeech.setFont(new Font("Arial", Font.BOLD, 20));
@@ -149,7 +157,11 @@ public class AccountTab {
 
         JButton driverConfig = new JButton("Update Driver Configuration");
         driverConfig.addActionListener(openDriverNarratorMenu());
-        right.add(driverConfig, RegexAssist.generateConstraints(0, 11));
+        driverConfig.setForeground(Color.WHITE);
+        driverConfig.setBackground(Color.RED);
+        driverConfig.setPreferredSize(new Dimension(400, 40));
+        driverConfig.setFont(new Font("Arial", Font.BOLD, 20));
+        right.add(driverConfig, generateConstraints(0, 11, new Insets(20, 0, 10, 0)));
 
     }
 
@@ -157,6 +169,7 @@ public class AccountTab {
 
         JLabel newLab = new JLabel(text);
         newLab.setFont(new Font("Arial", Font.BOLD, 23));
+        newLab.setForeground(Color.RED);
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.gridx = x;
         constraints.gridy = y;
@@ -169,7 +182,8 @@ public class AccountTab {
     private JLabel quickAddLabel(String text, JPanel panel, int x, int y, Insets insets) {
 
         JLabel newLab = new JLabel(text);
-        newLab.setFont(new Font("Arial", Font.BOLD, 23));
+        newLab.setFont(new Font("Arial", Font.BOLD, 35));
+        newLab.setForeground(Color.red);
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.gridx = x;
         constraints.gridy = y;
@@ -209,6 +223,9 @@ public class AccountTab {
 
     private JCheckBox quickAddCheckBox(JPanel panel, int x, int y, String preference) {
         JCheckBox checkBox = new JCheckBox("", AccountHandler.getInstance().getOption(preference));
+        checkBox.setBackground(new Color(21, 21, 31));
+        checkBox.setForeground(Color.RED);
+        checkBox.setOpaque(false);
         checkBox.addActionListener(changePreference(preference, checkBox));
         panel.add(checkBox, generateConstraints(x, y, new Insets(0, 10, 0, 100)));
 

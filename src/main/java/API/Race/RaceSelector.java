@@ -39,7 +39,7 @@ public class RaceSelector {
                         sessionKey = value.replace("\"", "");
                         break;
                     case "\"date_start\"":
-                        String timeRaw = pair.split("T")[1].replace("\"", "");
+                        String timeRaw = pair.split("T")[1].replace("\"", "").split("\\+")[0];
                         startTime = RegexAssist.convertToUnix(timeRaw);
                         date = pair.split("T")[0].replace("date_start", "").replace("\"", "").replace(":", "");
                         break;
@@ -52,6 +52,41 @@ public class RaceSelector {
             }
             sessions.get(year).put(sessionKey, new Session(name, startTime, date, sessionKey));
         }
+    }
+
+    public static Session getLiveSession() {
+        Request req = new Request("https://api.openf1.org/v1/sessions?session_key=latest");
+
+        for (String cur : req.getResponses()) {
+            String[] keyValuePairs = cur.split(",");
+            String name = "";
+            int startTime = 0;
+            String date = "";
+            String sessionKey = "";
+            for (String pair : keyValuePairs) {
+                String[] keyValue = pair.split(":");
+                if (keyValue.length < 2) continue;
+                String key = keyValue[0].trim();
+                String value = keyValue[1].trim().replace("]", "");
+                switch (key) {
+                    case "\"country_name\"":
+                        name = value.replace("\"", "");
+                        break;
+                    case "\"session_key\"":
+                        sessionKey = value.replace("\"", "");
+                        break;
+                    case "\"date_start\"":
+                        String timeRaw = pair.split("T")[1].replace("\"", "").split("\\+")[0];
+                        startTime = RegexAssist.convertToUnix(timeRaw);
+                        date = pair.split("T")[0].replace("date_start", "").replace("\"", "").replace(":", "");
+                        break;
+                }
+            }
+            if (name == "") continue;
+            return new Session(name, startTime, date, sessionKey);
+        }
+
+        return null;
     }
 
     public HashMap<String, Session> getAllSessionsInYear(int year) {

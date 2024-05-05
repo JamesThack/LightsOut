@@ -15,18 +15,20 @@ import java.util.TreeMap;
 
 public class DriverPositions {
 
-    private final HashMap<Integer, TreeMap<Integer, Integer>> positions;
+    private  HashMap<Integer, TreeMap<Integer, Integer>> positions;
     private static DriverPositions instance;
-    private final Request request;
+    private Request request;
     private TreeMap<Integer, Integer> pastDriverPositions;
+    private Session session;
 
-//    public static DriverPositions getInstance() {
-//        if (instance == null) instance = new DriverPositions();
-//        return instance;
-//    }
 
     public DriverPositions(Session session) {
 
+        this.session = session;
+       refreshData();
+    }
+
+    public void refreshData() {
         positions = new HashMap<>();
 
         request = new Request("https://api.openf1.org/v1/position", session.getSessionKey());
@@ -49,7 +51,7 @@ public class DriverPositions {
                         position = Integer.parseInt(value);
                         break;
                     case "\"date\"":
-                        String timeRaw = pair.split("T")[1].replace("\"", "");
+                        String timeRaw = pair.split("T")[1].replace("\"", "").split("\\+")[0];
                         time = RegexAssist.convertToUnix(timeRaw);
                         break;
                 }
