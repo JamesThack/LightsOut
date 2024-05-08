@@ -14,11 +14,13 @@ public class RaceSelector {
 
     private final Request request;
     private final HashMap<Integer, HashMap<String, Session>> sessions;
+    private ArrayList<Session> sortedSessions;
 
     public RaceSelector() {
 
         sessions = new HashMap<>();
         request = new Request("https://api.openf1.org/v1/sessions?session_name=Race");
+        sortedSessions = new ArrayList<>();
 
         for (String cur : request.getResponses()) {
             String[] keyValuePairs = cur.split(",");
@@ -51,6 +53,7 @@ public class RaceSelector {
                 sessions.put(year, new HashMap<>());
             }
             sessions.get(year).put(sessionKey, new Session(name, startTime, date, sessionKey));
+            sortedSessions.add(new Session(name, startTime, date, sessionKey));
         }
     }
 
@@ -89,16 +92,15 @@ public class RaceSelector {
         return null;
     }
 
+
+
     public HashMap<String, Session> getAllSessionsInYear(int year) {
         return sessions.get(year);
     }
 
     public ArrayList<Session> getAllSessions() {
-        ArrayList<Session> allSessions = new ArrayList<Session>();
-        for (int cur : sessions.keySet()) {
-            allSessions.addAll(sessions.get(cur).values());
-        }
-        return allSessions;
+
+        return sortedSessions;
     }
 
 

@@ -1,8 +1,5 @@
 package API;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -13,7 +10,6 @@ import java.util.regex.Pattern;
 
 public class AccountHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(AccountHandler.class);
     private static AccountHandler instance;
 
     private boolean isLoggedIn;
@@ -192,7 +188,7 @@ public class AccountHandler {
     private void connect() {
         try {
             // db parameters
-            String url = "jdbc:sqlite:/home/james/Documents/Uni Work/LightsOut/LightsOut/db/db";
+            String url = "jdbc:sqlite:/home/james/Documents/GitHub/LightsOut/db/db";
             // create a connection to the database
             connection = DriverManager.getConnection(url);
 

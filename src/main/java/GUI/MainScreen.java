@@ -8,6 +8,7 @@ import javax.swing.*;
 
 import API.AccountHandler;
 import API.Components.Session;
+import API.DriverAPI;
 import API.Race.Flags;
 import API.Race.Race;
 import API.Race.SafetyCar;
@@ -55,6 +56,7 @@ public class MainScreen {
 
 	public MainScreen(int initialSeconds) {
 		frame = new JFrame();
+		frame.setBackground(new Color(22, 22, 32));
 
 		accountTabPanel = new BackgroundFrame("Art/SignIn.png");
 
@@ -116,19 +118,44 @@ public class MainScreen {
 
 	public void updatePositions() {
 
+		if (!isLive) return;
+
 		System.out.println("Updating positions");
 
-		driverViewTab.getDriverPositions().refreshData();
-		raceControlSection.getLapCalculator().refreshData();
+		if (driverViewTab == null || raceControlSection == null) return;
+
+		Thread speechThread = new Thread(new Runnable() {
+			public void run() {
+				driverViewTab.getDriverPositions().refreshData();
+				raceControlSection.getLapCalculator().refreshData();
+				System.out.println("Updated Positions");
+			}
+		});
+		speechThread.start();
+
+
+
 	}
 
 	public void updateSafety() {
 
+		if (!isLive) return;
+
 		System.out.println("Updating safety");
 
-		tyreHandler.refreshData();
-		safetyCar.refreshData();
-		flags.refreshData();
+		if (tyreHandler == null || safetyCar == null || flags == null) return;
+
+		Thread speechThread = new Thread(new Runnable() {
+			public void run() {
+				tyreHandler.refreshData();
+				safetyCar.refreshData();
+				flags.refreshData();
+				System.out.println("Updated safety");
+			}
+		});
+		speechThread.start();
+
+
 	}
 
 	public SafetyCar getSafetyCar() {
@@ -155,6 +182,9 @@ public class MainScreen {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setFont(new Font("Arial", Font.BOLD, 20));
+		tabbedPane.setBackground(Color.WHITE);
+		tabbedPane.setForeground(Color.BLACK);
 		frame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
 
 		signIn.refreshPanel();

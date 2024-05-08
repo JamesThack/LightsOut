@@ -35,7 +35,7 @@ public class SignIn {
 
     public void refreshPanel() {
         panel.removeAll();
-        panel.updateImage("/home/james/Documents/Uni Work/LightsOut/LightsOut/Art/SignIn.png");
+        panel.updateImage("/home/james/Documents/GitHub/LightsOut/Art/SignIn.png");
         initialise();
     }
 

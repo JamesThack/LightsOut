@@ -20,6 +20,8 @@ public class LapCalculator {
         this.startTime = startTime;
         refreshData();
 
+
+
     }
 
     public void refreshData() {

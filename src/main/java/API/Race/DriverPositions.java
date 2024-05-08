@@ -25,7 +25,7 @@ public class DriverPositions {
     public DriverPositions(Session session) {
 
         this.session = session;
-       refreshData();
+        refreshData();
     }
 
     public void refreshData() {

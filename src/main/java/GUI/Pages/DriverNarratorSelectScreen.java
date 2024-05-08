@@ -43,7 +43,7 @@ public class DriverNarratorSelectScreen {
         JCheckBox checkBox = new JCheckBox(driver.getName(), AccountHandler.getInstance().getDriverNarrate(driver.getNumber()));
         checkBox.setOpaque(false);
         checkBox.setForeground(Color.RED);
-        checkBox.setFont(new Font("Arial", Font.BOLD, 15));
+        checkBox.setFont(new Font("Arial", Font.BOLD, 25));
         checkBox.addActionListener(changePreference(driver.getNumber(), checkBox));
         panel.add(checkBox);
 

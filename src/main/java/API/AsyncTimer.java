@@ -14,8 +14,8 @@ public class AsyncTimer extends TimerTask {
 	public AsyncTimer(MainScreen menu) {
 		this.menu = menu;
 
-		lapsAndPositions = 15;
-		raceInfo = 30;
+		lapsAndPositions = 30;
+		raceInfo = 45;
 		
 	}
 
@@ -25,22 +25,21 @@ public class AsyncTimer extends TimerTask {
 			menu.setSeconds(menu.getSeconds() + 1);
 			menu.getSpeechHandler().checkSpeech();
 
-			lapsAndPositions -=1;
-			raceInfo -=1;
-
-			if (lapsAndPositions < 0) {
-				lapsAndPositions = 30;
-				menu.updatePositions();
-			}
-
-			if (raceInfo <0) {
-				raceInfo = 30;
-				menu.updateSafety();
-			}
-
-
-
 		}
+
+		lapsAndPositions -=1;
+		raceInfo -=1;
+
+		if (lapsAndPositions < 0) {
+			lapsAndPositions = 6;
+			menu.updatePositions();
+		}
+
+		if (raceInfo <0) {
+			raceInfo = 30;
+			menu.updateSafety();
+		}
+
 	}
 	
 }

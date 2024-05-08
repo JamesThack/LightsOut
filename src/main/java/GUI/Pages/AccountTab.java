@@ -39,7 +39,7 @@ public class AccountTab {
 
     public void refreshPage() {
         panel.removeAll();
-        panel.updateImage("/home/james/Documents/Uni Work/LightsOut/LightsOut/Art/Account.png");
+        panel.updateImage("/home/james/Documents/GitHub/LightsOut/Art/Account.png");
         initialisePage();
     }
 

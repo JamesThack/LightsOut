@@ -34,14 +34,19 @@ public class RaceInfoSection {
     public void addComponents() {
         panel.removeAll();
 
-        JLabel lblTime = new JLabel("    Race Information:    ");
+        JLabel lblTime = new JLabel("  Race Information:  ");
+        lblTime.setFont(new Font("Arial", Font.BOLD, 25));
         panel.add(lblTime);
         lblTime.setForeground(new Color(255, 255, 255));
         if (screen.getSession() != null) {
             JLabel circuitName = new JLabel("    Location - " + screen.getSession().getName() + "    ");
+            circuitName.setFont(new Font("Arial", Font.BOLD, 20));
             JLabel raceTime = new JLabel("    Date - " + screen.getSession().getDate());
+            raceTime.setFont(new Font("Arial", Font.BOLD, 20));
             JLabel conditions = new JLabel("    Wind - Calm");
+            conditions.setFont(new Font("Arial", Font.BOLD, 20));
             JLabel trackTemp = new JLabel("    Track Temp - " + (int) ((Math.random() * (12 - 6)) + 6) + ".C    ");
+            trackTemp.setFont(new Font("Arial", Font.BOLD, 20));
 
             circuitName.setForeground(new Color(255, 255, 255));
             raceTime.setForeground(new Color(255, 255, 255));
