@@ -6,7 +6,9 @@ import APIObjects.Team;
 
 import java.util.ArrayList;
 
-
+/**
+ * The driver API request class, requests the relevant driver information from the system
+ */
 public class DriverAPI {
 
     private ArrayList<Driver> drivers;
@@ -22,7 +24,6 @@ public class DriverAPI {
             if (current.getName().equalsIgnoreCase(driverName)) return current;
         }
 
-        //Warning, program should never reach this point
         return null;
     }
 
@@ -39,6 +40,7 @@ public class DriverAPI {
         return drivers;
     }
 
+    //Generates the driver information
     public void regenerateDriverList(String sessionKey) {
 
         drivers = new ArrayList<Driver>();

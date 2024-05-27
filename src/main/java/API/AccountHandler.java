@@ -8,6 +8,9 @@ import java.sql.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Account Handler Class, handles logging in and user information
+ */
 public class AccountHandler {
 
     private static AccountHandler instance;
@@ -174,7 +177,6 @@ public class AccountHandler {
             Statement stmt  = connection.createStatement();
             ResultSet rs    = stmt.executeQuery(sql);
 
-            // loop through the result set
             while (rs.next()) {
                 return true;
             }
@@ -185,36 +187,28 @@ public class AccountHandler {
         return false;
     }
 
+    /**
+     * Change this class in order to use database access
+     */
     private void connect() {
         try {
-            // db parameters
-            String url = "jdbc:sqlite:/home/james/Documents/GitHub/LightsOut/db/db";
-            // create a connection to the database
+            String url = "jdbc:sqlite:/home/james/Documents/Uni Work/LightsOut/LightsOut/db/db";
             connection = DriverManager.getConnection(url);
-
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public static byte[] getSHA(String input) throws NoSuchAlgorithmException
+    public static byte[] shaEncrypt(String input) throws NoSuchAlgorithmException
     {
-        /* MessageDigest instance for hashing using SHA512*/
         MessageDigest md = MessageDigest.getInstance("SHA-512");
-
-        /* digest() method called to calculate message digest of an input and return array of byte */
         return md.digest(input.getBytes(StandardCharsets.UTF_8));
     }
 
     public static String toHexString(byte[] hash)
     {
-        /* Convert byte array of hash into digest */
         BigInteger number = new BigInteger(1, hash);
-
-        /* Convert the digest into hex value */
         StringBuilder hexString = new StringBuilder(number.toString(16));
-
-        /* Pad with leading zeros */
         while (hexString.length() < 32)
         {
             hexString.insert(0, '0');
@@ -225,7 +219,7 @@ public class AccountHandler {
 
     public String encryptText(String text) {
         try {
-            return(toHexString(getSHA(text)));
+            return(toHexString(shaEncrypt(text)));
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }

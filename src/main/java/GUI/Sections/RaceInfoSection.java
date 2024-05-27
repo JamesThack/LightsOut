@@ -31,6 +31,16 @@ public class RaceInfoSection {
         addComponents();
     }
 
+    public void clearScreen() {
+        panel.removeAll();
+
+        JLabel lblTime = new JLabel("  Race Information:  ");
+        lblTime.setFont(new Font("Arial", Font.BOLD, 25));
+        lblTime.setForeground(new Color(255, 255, 255));
+        panel.add(lblTime);
+
+    }
+
     public void addComponents() {
         panel.removeAll();
 

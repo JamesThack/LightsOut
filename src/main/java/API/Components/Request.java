@@ -9,6 +9,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
+/**
+ * A generic request class, used by other Request methods to connect to the API.
+ */
 public class Request {
 
     private String[] responses;
@@ -29,6 +32,7 @@ public class Request {
         return responses;
     }
 
+    //The method that collects the data, either generates a group of valid responses or returns an error
     private void generateElements(String request) {
         try {
             URL url = new URL(request);
@@ -48,5 +52,4 @@ public class Request {
             e.printStackTrace();
         }
     }
-
 }

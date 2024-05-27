@@ -3,6 +3,9 @@ package API.Components;
 import com.sun.speech.freetts.Voice;
 import com.sun.speech.freetts.VoiceManager;
 
+/**
+ * Speech Request, this is a request to make the narrator speak, is used in the Speech classs
+ */
 public class SpeechRequest {
 
     private int driver;

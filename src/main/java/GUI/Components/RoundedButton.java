@@ -5,6 +5,9 @@ import GUI.MainScreen;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * This is the class to create a rounded button
+ */
 public class RoundedButton extends JButton {
 
     private float borderRadius;

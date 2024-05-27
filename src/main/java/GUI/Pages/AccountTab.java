@@ -39,7 +39,7 @@ public class AccountTab {
 
     public void refreshPage() {
         panel.removeAll();
-        panel.updateImage("/home/james/Documents/GitHub/LightsOut/Art/Account.png");
+        panel.updateImage("Art/Account.png");
         initialisePage();
     }
 
@@ -133,9 +133,6 @@ public class AccountTab {
 
         quickAddLabel("Narrator narrates overtakes", right, 0, 3);
         quickAddCheckBox(right, 1, 3, "overtakenarrate");
-
-        quickAddLabel("Narrator narrates pits", right, 0, 4);
-        quickAddCheckBox(right, 1, 4, "pitnarrate");
 
         quickAddLabel("Narrator narrates safety car", right, 0, 5);
         quickAddCheckBox(right, 1, 5, "conditionnarrate");

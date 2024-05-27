@@ -7,6 +7,9 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.HashSet;
 
+/**
+ * The preferences handler, sorts all of the user preferences
+ */
 public class PreferencesHandler {
 
     private HashMap<String, Boolean> options;
@@ -99,7 +102,6 @@ public class PreferencesHandler {
             Statement stmt  = connection.createStatement();
             ResultSet rs    = stmt.executeQuery(sql);
 
-            // loop through the result set
             while (rs.next()) {
 
                 int driverNumber = rs.getInt("driverNumber");
@@ -119,7 +121,6 @@ public class PreferencesHandler {
             Statement stmt  = connection.createStatement();
             ResultSet rs    = stmt.executeQuery(sql);
 
-            // loop through the result set
             while (rs.next()) {
 
                 String speechName = rs.getString("speechName");
@@ -176,10 +177,8 @@ public class PreferencesHandler {
                 Statement stmt  = connection.createStatement();
                 stmt.execute(sql);
             } catch (SQLException e) {
-                System.out.println("Error: " + e.getMessage());
+                System.out.println(e.getMessage());
             }
-
-
         }
     }
 
@@ -188,8 +187,6 @@ public class PreferencesHandler {
         try {
             Statement stmt  = connection.createStatement();
             ResultSet rs    = stmt.executeQuery(sql);
-
-            // loop through the result set
             while (rs.next()) {
                 return true;
             }
@@ -205,13 +202,11 @@ public class PreferencesHandler {
         try {
             Statement stmt  = connection.createStatement();
             ResultSet rs    = stmt.executeQuery(sql);
-
-            // loop through the result set
             while (rs.next()) {
                 return true;
             }
         } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println(e.getMessage());
         }
 
         return false;
@@ -222,15 +217,12 @@ public class PreferencesHandler {
         try {
             Statement stmt  = connection.createStatement();
             ResultSet rs    = stmt.executeQuery(sql);
-
-            // loop through the result set
             while (rs.next()) {
                 return true;
             }
         } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println(e.getMessage());
         }
-
         return false;
     }
 

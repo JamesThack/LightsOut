@@ -46,7 +46,12 @@ public class RaceSelectorSection {
             newBut.setPreferredSize(new Dimension(300, 100));
             newBut.setBackground(Color.RED);
             newBut.setForeground(Color.WHITE);
-            newBut.setText(cur.getName() + " - " + cur.getDate().split("-")[0]);
+            if (cur.getName().contains("United Arab")) {
+                newBut.setText("UAE" + " - " + cur.getDate().split("-")[0]);
+            } else {
+                newBut.setText(cur.getName() + " - " + cur.getDate().split("-")[0]);
+            }
+
             newBut.setFont(new Font("Arial", Font.BOLD, 20));
             newBut.addActionListener(setRaceSessionListener(cur));
             panel.add(newBut);

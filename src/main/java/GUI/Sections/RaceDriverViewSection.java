@@ -66,7 +66,6 @@ public class RaceDriverViewSection {
             Driver curDriver = driverOrder.get(count);
             cur.setBackground(curDriver.getTeam().getColour());
             cur.setForeground(new Color(0,0,0));
-            //Temporary
             if (curDriver.getTeam().getName().contains("Red Bull") || curDriver.getTeam().getName().contains("Williams")|| curDriver.getTeam().getName().contains("Aston Martin")) cur.setForeground(new Color(255, 255, 255));
             cur.setText("<html>P" + (count + 1) + ": " + curDriver.getStarter() + " " + curDriver.getNumber() + " <br>" +  screen.getTyreHandler().getTyreAt(curDriver.getNumber(), screen.getCurrentLap()) + "</html>");
             count +=1;

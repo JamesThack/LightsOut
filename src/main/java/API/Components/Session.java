@@ -1,5 +1,8 @@
 package API.Components;
 
+/**
+ * A session class, stores a session (information about an f1 race)
+ */
 public class Session {
 
     private String name;

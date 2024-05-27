@@ -27,7 +27,7 @@ public class MainScreen {
 
 	private BackgroundFrame controllerContainer;
 
-	private RaceDriverViewSection driverViewTab;
+	public RaceDriverViewSection driverViewTab;
 	private RaceControlSection raceControlSection;
 	private final RaceInfoSection raceInfoSection;
 	private SignIn signIn;
@@ -259,9 +259,12 @@ public class MainScreen {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				speechHandler.clearCache();
+				raceInfoSection.clearScreen();
 				driverViewTab.clearCache();
 				driverContainer.removeAll();
 				driverContainer.add(raceSelectorSection.getPanel());
+				driverViewTab.getDriverPositions().pastDriverPositions = null;
+				driverViewTab.getDriverPositions().positions = null;
 				driverViewTab = null;
 				raceSelectorSection.redrawComponents();
 				controllerContainer.remove(raceControlSection.getPanel());

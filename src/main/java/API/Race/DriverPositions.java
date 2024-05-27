@@ -13,12 +13,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeMap;
 
+/**
+ * This is the class that generates the driver positions
+ */
 public class DriverPositions {
 
-    private  HashMap<Integer, TreeMap<Integer, Integer>> positions;
+    public  HashMap<Integer, TreeMap<Integer, Integer>> positions;
     private static DriverPositions instance;
     private Request request;
-    private TreeMap<Integer, Integer> pastDriverPositions;
+    public TreeMap<Integer, Integer> pastDriverPositions;
     private Session session;
 
 
@@ -68,12 +71,6 @@ public class DriverPositions {
         }
     }
 
-    public void getAllDriverPos(int driverNumber) {
-        for (int cur : positions.get(driverNumber).keySet()) {
-            System.out.println(RegexAssist.convertToTimeString(cur) + " , " + positions.get(driverNumber).get(cur));
-        }
-    }
-
     public int getDriverPosAt(int driver, int time) {
         int lastPos = 0;
         for (int cur : positions.get(driver).keySet()) {
@@ -120,22 +117,12 @@ public class DriverPositions {
         pastDriverPositions = null;
     }
 
-    public void printDriverPositionsAt(int time) {
-        TreeMap<Integer, Integer> timings = getAllDriverPositions(time);
-
-        for (int cur : timings.keySet()) {
-            System.out.println(DriverAPI.getInstance().getDriver(timings.get(cur)).getName() + " is in position " + cur);
-        }
-    }
-
-
     public ArrayList<Driver> getDriversInOrder(int time) {
         ArrayList<Driver> order = new ArrayList<Driver>();
         TreeMap<Integer, Integer> timings = getAllDriverPositions(time);
         for (int cur : timings.keySet()) {
             order.add(DriverAPI.getInstance().getDriver(timings.get(cur)));
         }
-
         return order;
     }
 

@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.TreeMap;
 
+/**
+ * The speech class, organises and priorotises speech requests
+ */
 public class Speech {
 
     private Voice narrator;
@@ -20,6 +23,7 @@ public class Speech {
 
         narrator = VoiceManager.getInstance().getVoice("kevin16");
         narrator.allocate();
+
         isSpeaking = false;
     }
 
